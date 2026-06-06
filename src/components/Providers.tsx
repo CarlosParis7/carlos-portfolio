@@ -1,7 +1,12 @@
 "use client";
 
 import { MotionConfig } from "framer-motion";
+import { LanguageProvider } from "./LanguageProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return (
+    <LanguageProvider>
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    </LanguageProvider>
+  );
 }

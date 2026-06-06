@@ -101,7 +101,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="en"
       className={`${geist.variable} ${geistMono.variable} antialiased dark bg-background text-foreground`}
     >
       <body className="min-h-screen flex flex-col">
@@ -110,7 +110,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <a href="#main-content" className="skip-link">
-          Saltar al contenido
+          Skip to main content
         </a>
         <ScrollProgress />
         <GlobalSpotlight />
