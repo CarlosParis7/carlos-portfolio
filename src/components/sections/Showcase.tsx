@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { SwiftPosDashboard } from "@/components/ui/SwiftPosDashboard";
 import { BoxExpressDashboard } from "@/components/ui/BoxExpressDashboard";
 import { CopilotMockup } from "@/components/ui/CopilotMockup";
 import { LandingMockup } from "@/components/ui/LandingMockup";
+import { useTranslations } from "@/lib/useTranslations";
 
 type Project = {
   title: string;
@@ -13,46 +15,9 @@ type Project = {
   description: string;
   color: string;
   mockup: React.ReactNode;
+  /** Live demo URL. When present the whole card becomes a link. */
+  url?: string;
 };
-
-const projects: Project[] = [
-  {
-    title: "SwiftPOS",
-    category: "SaaS · Punto de Venta",
-    status: "En producción",
-    description:
-      "Diseñé la arquitectura completa: Next.js en frontend, Node.js + Postgres en backend, módulos de inventario, reportes de ventas y análisis asistido por IA.",
-    color: "from-orange-500/20 to-red-500/20",
-    mockup: <SwiftPosDashboard />,
-  },
-  {
-    title: "BoxExpress",
-    category: "SaaS · Logística",
-    status: "En producción",
-    description:
-      "Construí el sistema de tracking, notificaciones por WhatsApp vía Twilio, dashboard de rentabilidad y la lógica de gestión de casilleros P.O. Box.",
-    color: "from-indigo-500/20 to-cyan-500/20",
-    mockup: <BoxExpressDashboard />,
-  },
-  {
-    title: "Atlas Copilot",
-    category: "IA · RAG",
-    status: "En producción",
-    description:
-      "Implementé el pipeline RAG completo: ingesta de documentos, embeddings con OpenAI, búsqueda vectorial en Supabase pgvector y UI de chat en tiempo real.",
-    color: "from-emerald-500/20 to-teal-500/20",
-    mockup: <CopilotMockup />,
-  },
-  {
-    title: "Landing Pages",
-    category: "Experiencia Web",
-    status: "Entregadas",
-    description:
-      "Diseñé y desarrollé sitios de alta conversión para clientes: clínicas de estética, firmas legales y fotógrafos. Métricas, SEO y animaciones incluidas.",
-    color: "from-rose-500/20 to-pink-500/20",
-    mockup: <LandingMockup />,
-  },
-];
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -60,23 +25,17 @@ function ProjectCard({
   project,
   index,
   featured = false,
+  demoLabel,
 }: {
   project: Project;
   index: number;
   featured?: boolean;
+  demoLabel: string;
 }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.08, duration: 0.6, ease }}
-      className={`group relative rounded-3xl overflow-hidden hairline ${
-        featured
-          ? "lg:col-span-3 flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch min-h-[360px]"
-          : "h-[380px]"
-      }`}
-    >
+  const interactive = Boolean(project.url);
+
+  const inner = (
+    <>
       <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20 group-hover:opacity-35 transition-opacity duration-500`} />
 
       {/* Status badge */}
@@ -101,6 +60,14 @@ function ProjectCard({
         <p className="text-[13px] text-foreground/55 max-w-md leading-relaxed">
           {project.description}
         </p>
+
+        {/* Demo affordance — only when there's a live URL */}
+        {interactive && (
+          <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent w-fit">
+            {demoLabel}
+            <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
+        )}
       </div>
 
       {/* Mockup */}
@@ -118,11 +85,82 @@ function ProjectCard({
         </div>
         <div className="relative h-[calc(100%-1.5rem)]">{project.mockup}</div>
       </div>
-    </motion.div>
+    </>
   );
+
+  const className = `group relative rounded-3xl overflow-hidden hairline ${
+    featured
+      ? "lg:col-span-3 flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch min-h-[360px]"
+      : "h-[380px]"
+  } ${interactive ? "cursor-pointer transition-transform duration-300 hover:-translate-y-1 focus-visible:-translate-y-1" : ""}`;
+
+  const motionProps = {
+    initial: { opacity: 0, y: 28 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { delay: index * 0.08, duration: 0.6, ease },
+    className,
+  };
+
+  if (interactive) {
+    return (
+      <motion.a
+        {...motionProps}
+        href={project.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${project.title} — ${demoLabel}`}
+      >
+        {inner}
+      </motion.a>
+    );
+  }
+
+  return <motion.div {...motionProps}>{inner}</motion.div>;
 }
 
 export function Showcase() {
+  const { t } = useTranslations();
+
+  const projects: Project[] = [
+    {
+      title: "SwiftPOS",
+      category: t("projSwiftCat"),
+      status: t("statusLive"),
+      description: t("projSwiftDesc"),
+      color: "from-orange-500/20 to-red-500/20",
+      mockup: <SwiftPosDashboard />,
+      url: "https://swiftpos-nine.vercel.app/",
+    },
+    {
+      title: "BoxExpress",
+      category: t("projBoxCat"),
+      status: t("statusLive"),
+      description: t("projBoxDesc"),
+      color: "from-indigo-500/20 to-cyan-500/20",
+      mockup: <BoxExpressDashboard />,
+      url: "https://poboxweb.vercel.app/",
+    },
+    {
+      title: "Atlas Copilot",
+      category: t("projAtlasCat"),
+      status: t("statusLive"),
+      description: t("projAtlasDesc"),
+      url: "https://ai-knowledge-copilot-web.vercel.app/login",
+      color: "from-emerald-500/20 to-teal-500/20",
+      mockup: <CopilotMockup />,
+    },
+    {
+      title: "Landing Pages",
+      category: t("projLandingCat"),
+      status: t("statusDelivered"),
+      description: t("projLandingDesc"),
+      color: "from-rose-500/20 to-pink-500/20",
+      mockup: <LandingMockup />,
+      url: "https://boniekapariciophotos.netlify.app/",
+    },
+  ];
+
   const [featured, ...rest] = projects;
 
   return (
@@ -130,20 +168,24 @@ export function Showcase() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[0.95] text-balance">
-            Proyectos que
+            {t("showcaseHeadA")}
             <br />
-            <span className="text-foreground/40">diseñé y construí.</span>
+            <span className="text-foreground/40">{t("showcaseHeadB")}</span>
           </h2>
           <p className="text-sm text-foreground/40 max-w-xs leading-relaxed sm:text-right">
-            De la arquitectura al deploy. Diseño,
-            frontend, backend y base de datos.
+            {t("showcaseSub")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <ProjectCard project={featured} index={0} featured />
+          <ProjectCard project={featured} index={0} featured demoLabel={t("viewDemo")} />
           {rest.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i + 1} />
+            <ProjectCard
+              key={project.title}
+              project={project}
+              index={i + 1}
+              demoLabel={t("viewDemo")}
+            />
           ))}
         </div>
       </div>

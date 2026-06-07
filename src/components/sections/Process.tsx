@@ -1,42 +1,29 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const steps = [
-  {
-    tag: "intake",
-    title: "Entender el problema",
-    desc: "Antes de escribir código, entiendo qué se quiere lograr y por qué. Aterrizo la idea en requisitos concretos.",
-  },
-  {
-    tag: "design",
-    title: "Definir la arquitectura",
-    desc: "Elijo el stack correcto para el problema, no el de moda. Diseño la estructura de datos y los flujos principales.",
-  },
-  {
-    tag: "build",
-    title: "Construir con criterio",
-    desc: "Código limpio, tipado y testeado. Avance incremental con demos tempranas para validar en el camino.",
-  },
-  {
-    tag: "ship",
-    title: "Desplegar y medir",
-    desc: "CI/CD, monitoreo y observabilidad desde el primer deploy. Si algo falla, lo sé antes que el usuario.",
-  },
-];
+import { useTranslations } from "@/lib/useTranslations";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export function Process() {
+  const { t } = useTranslations();
+
+  const steps = [
+    { tag: "intake", title: t("proc1Title"), desc: t("proc1Desc") },
+    { tag: "design", title: t("proc2Title"), desc: t("proc2Desc") },
+    { tag: "build", title: t("proc3Title"), desc: t("proc3Desc") },
+    { tag: "ship", title: t("proc4Title"), desc: t("proc4Desc") },
+  ];
+
   return (
     <section className="py-28 md:py-36 px-6 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[0.95] text-balance">
-            Cómo trabajo.
+            {t("processHead")}
           </h2>
           <p className="text-sm text-foreground/40 max-w-xs leading-relaxed sm:text-right">
-            Cuatro fases. Sin saltar pasos.
+            {t("processSub")}
           </p>
         </div>
 

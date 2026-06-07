@@ -1,16 +1,51 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useTranslations } from "@/lib/useTranslations";
 
 // ─── Snippets ────────────────────────────────────────────────────────────────
+// Code stays in English (it's code); only comments, descriptions and the few
+// user-facing error strings switch with the active language.
 
-const SNIPPETS = [
-  {
-    file: "useDebounce.ts",
-    lang: "React",
-    desc: "Hook que elimina llamadas redundantes a la API en búsquedas en tiempo real.",
-    code: `// Evita llamadas innecesarias mientras el usuario escribe
+type Snippet = { file: string; lang: string; desc: string; code: string };
+
+function buildSnippets(language: "es" | "en"): Snippet[] {
+  const c =
+    language === "en"
+      ? {
+          desc1: "Hook that drops redundant API calls during real-time search.",
+          cmt1a: "// Avoids unnecessary calls while the user types",
+          cmt1b: "// Usage: search with a 300ms debounce",
+          desc2: "REST endpoint with schema validation, pagination and typed error handling.",
+          cmt2: "// GET /api/products — paginated and validated",
+          err2: "Failed to fetch products",
+          desc3: "Query with RLS, typed join and optimistic real-time inventory update.",
+          cmt3a: "// Stock adjustment with validation and audit",
+          cmt3b: "// Audit log for traceability",
+          err3a: "Product not found",
+          err3b: "Insufficient stock",
+        }
+      : {
+          desc1: "Hook que elimina llamadas redundantes a la API en búsquedas en tiempo real.",
+          cmt1a: "// Evita llamadas innecesarias mientras el usuario escribe",
+          cmt1b: "// Uso: búsqueda con 300ms de debounce",
+          desc2: "Endpoint REST con validación de esquema, paginación y manejo de errores tipado.",
+          cmt2: "// GET /api/products — paginado y validado",
+          err2: "Error al obtener productos",
+          desc3: "Query con RLS, join tipado y actualización optimista del inventario en tiempo real.",
+          cmt3a: "// Ajuste de inventario con validación y auditoría",
+          cmt3b: "// Registro de auditoría para trazabilidad",
+          err3a: "Producto no encontrado",
+          err3b: "Stock insuficiente",
+        };
+
+  return [
+    {
+      file: "useDebounce.ts",
+      lang: "React",
+      desc: c.desc1,
+      code: `${c.cmt1a}
 function useDebounce<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState<T>(value);
 
@@ -25,14 +60,14 @@ function useDebounce<T>(value: T, delay: number): T {
   return debounced;
 }
 
-// Uso: búsqueda con 300ms de debounce
+${c.cmt1b}
 const query = useDebounce(searchInput, 300);`,
-  },
-  {
-    file: "products.ts",
-    lang: "Node.js",
-    desc: "Endpoint REST con validación de esquema, paginación y manejo de errores tipado.",
-    code: `// GET /api/products — paginado y validado
+    },
+    {
+      file: "products.ts",
+      lang: "Node.js",
+      desc: c.desc2,
+      code: `${c.cmt2}
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const page = Math.max(1, Number(searchParams.get("page") ?? 1));
@@ -53,15 +88,15 @@ export async function GET(req: Request) {
       meta: { page, limit, total, pages: Math.ceil(total / limit) },
     });
   } catch (err) {
-    return Response.json({ error: "Error al obtener productos" }, { status: 500 });
+    return Response.json({ error: "${c.err2}" }, { status: 500 });
   }
 }`,
-  },
-  {
-    file: "inventory.ts",
-    lang: "Supabase",
-    desc: "Query con RLS, join tipado y actualización optimista del inventario en tiempo real.",
-    code: `// Ajuste de inventario con validación y auditoría
+    },
+    {
+      file: "inventory.ts",
+      lang: "Supabase",
+      desc: c.desc3,
+      code: `${c.cmt3a}
 async function adjustStock(
   productId: string,
   delta: number,
@@ -73,8 +108,8 @@ async function adjustStock(
     .eq("id", productId)
     .single();
 
-  if (error || !product) throw new Error("Producto no encontrado");
-  if (product.stock + delta < 0) throw new Error("Stock insuficiente");
+  if (error || !product) throw new Error("${c.err3a}");
+  if (product.stock + delta < 0) throw new Error("${c.err3b}");
 
   const { error: updateError } = await supabase
     .from("products")
@@ -83,7 +118,7 @@ async function adjustStock(
 
   if (updateError) throw updateError;
 
-  // Registro de auditoría para trazabilidad
+  ${c.cmt3b}
   await supabase.from("stock_movements").insert({
     product_id: productId,
     delta,
@@ -91,8 +126,9 @@ async function adjustStock(
     snapshot: product.stock + delta,
   });
 }`,
-  },
-] as const;
+    },
+  ];
+}
 
 // ─── Tokenizer ───────────────────────────────────────────────────────────────
 
@@ -141,26 +177,29 @@ function tokenize(code: string): Token[] {
   return tokens;
 }
 
-// Pre-tokenize all snippets at module load time
-const COMPILED = SNIPPETS.map((s) => {
-  const tokens = tokenize(s.code);
-  const boundaries = tokens.reduce<number[]>((acc, t) => {
-    acc.push((acc[acc.length - 1] ?? 0) + t.text.length);
-    return acc;
-  }, []);
-  return { tokens, boundaries, total: boundaries[boundaries.length - 1] ?? 0 };
-});
+type Compiled = { tokens: Token[]; boundaries: number[]; total: number };
+
+function compile(snippets: Snippet[]): Compiled[] {
+  return snippets.map((s) => {
+    const tokens = tokenize(s.code);
+    const boundaries = tokens.reduce<number[]>((acc, t) => {
+      acc.push((acc[acc.length - 1] ?? 0) + t.text.length);
+      return acc;
+    }, []);
+    return { tokens, boundaries, total: boundaries[boundaries.length - 1] ?? 0 };
+  });
+}
 
 // ─── RenderedCode ─────────────────────────────────────────────────────────────
 
 function RenderedCode({
-  snippetIdx,
+  compiled,
   visible,
 }: {
-  snippetIdx: number;
+  compiled: Compiled;
   visible: number;
 }) {
-  const { tokens, boundaries, total } = COMPILED[snippetIdx];
+  const { tokens, boundaries, total } = compiled;
   return (
     <>
       {tokens.map((tok, i) => {
@@ -185,6 +224,10 @@ function RenderedCode({
 const SPEED = 22; // ms per character
 
 export function CodeShowcase() {
+  const { t, language } = useTranslations();
+  const snippets = useMemo(() => buildSnippets(language), [language]);
+  const compiled = useMemo(() => compile(snippets), [snippets]);
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-10%" });
 
@@ -193,27 +236,40 @@ export function CodeShowcase() {
   const rafRef = useRef<number>(0);
   const startRef = useRef<number>(0);
 
-  const runAnimation = useCallback((tabIdx: number) => {
-    cancelAnimationFrame(rafRef.current);
-    setVisible(0);
-    const total = COMPILED[tabIdx].total;
-    startRef.current = performance.now();
+  const runAnimation = useCallback(
+    (tabIdx: number) => {
+      cancelAnimationFrame(rafRef.current);
+      setVisible(0);
+      const total = compiled[tabIdx].total;
+      startRef.current = performance.now();
 
-    function tick(now: number) {
-      const elapsed = now - startRef.current;
-      const next = Math.min(Math.round(elapsed / SPEED), total);
-      setVisible(next);
-      if (next < total) rafRef.current = requestAnimationFrame(tick);
-    }
-    rafRef.current = requestAnimationFrame(tick);
-  }, []);
+      function tick(now: number) {
+        const elapsed = now - startRef.current;
+        const next = Math.min(Math.round(elapsed / SPEED), total);
+        setVisible(next);
+        if (next < total) rafRef.current = requestAnimationFrame(tick);
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    },
+    [compiled]
+  );
 
-  // Start on scroll into view
+  // Start the typing animation on scroll into view. Driving an rAF loop from an
+  // effect is the intended sync with an external system.
+  /* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!inView) return;
     runAnimation(activeTab);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [inView]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [inView]);
+
+  // When the language changes, swap the snippet to its fully-typed state so the
+  // already-revealed code re-renders in the new language without re-animating.
+  useEffect(() => {
+    if (!inView) return;
+    setVisible(compiled[activeTab].total);
+  }, [language]);
+  /* eslint-enable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
 
   function handleTab(idx: number) {
     if (idx === activeTab) return;
@@ -221,7 +277,7 @@ export function CodeShowcase() {
     runAnimation(idx);
   }
 
-  const snippet = SNIPPETS[activeTab];
+  const snippet = snippets[activeTab];
 
   return (
     <section
@@ -232,9 +288,9 @@ export function CodeShowcase() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[0.95]">
-            Código que
+            {t("codeHeadA")}
             <br />
-            <span className="text-foreground/40">habla por sí solo.</span>
+            <span className="text-foreground/40">{t("codeHeadB")}</span>
           </h2>
           <AnimatePresence mode="wait">
             <motion.p
@@ -268,7 +324,7 @@ export function CodeShowcase() {
 
             {/* File tabs */}
             <div className="flex items-stretch overflow-x-auto">
-              {SNIPPETS.map((s, i) => (
+              {snippets.map((s, i) => (
                 <button
                   key={s.file}
                   type="button"
@@ -315,7 +371,7 @@ export function CodeShowcase() {
               aria-hidden="true"
               className="hidden sm:flex flex-col items-end px-4 pt-6 pb-6 text-foreground/15 tick text-[12px] leading-[1.75] select-none shrink-0 border-r border-white/5"
             >
-              {SNIPPETS[activeTab].code.split("\n").map((_, i) => (
+              {snippets[activeTab].code.split("\n").map((_, i) => (
                 <span key={i}>{i + 1}</span>
               ))}
             </div>
@@ -332,7 +388,7 @@ export function CodeShowcase() {
                   className="font-mono text-[12.5px] md:text-[13.5px] leading-[1.75] whitespace-pre"
                 >
                   <code>
-                    <RenderedCode snippetIdx={activeTab} visible={visible} />
+                    <RenderedCode compiled={compiled[activeTab]} visible={visible} />
                   </code>
                 </motion.pre>
               </AnimatePresence>

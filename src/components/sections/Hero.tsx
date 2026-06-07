@@ -3,16 +3,18 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, Download } from "lucide-react";
-import { SITE, mailLink } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import { useEffect, useState } from "react";
+import { useTranslations } from "@/lib/useTranslations";
 
 function PanamaTime() {
   const [time, setTime] = useState("");
+  const { language } = useTranslations();
 
   useEffect(() => {
     function update() {
       setTime(
-        new Intl.DateTimeFormat("es-PA", {
+        new Intl.DateTimeFormat(language === "en" ? "en-US" : "es-PA", {
           timeZone: "America/Panama",
           hour: "2-digit",
           minute: "2-digit",
@@ -23,10 +25,14 @@ function PanamaTime() {
     update();
     const id = setInterval(update, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [language]);
 
   if (!time) return null;
-  return <span className="hidden sm:inline">{time} · Ciudad de Panamá</span>;
+  return (
+    <span className="hidden sm:inline">
+      {time} · {language === "en" ? "Panama City" : "Ciudad de Panamá"}
+    </span>
+  );
 }
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -39,6 +45,7 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export function Hero() {
+  const { t, cv, mail } = useTranslations();
   return (
     <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-16 px-6 overflow-hidden">
       {/* Off-center accent glow + grid */}
@@ -55,7 +62,7 @@ export function Hero() {
         >
           <span className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            DISPONIBLE PARA PROYECTOS
+            {t("heroStatus").toUpperCase()}
           </span>
           <span className="h-px flex-1 bg-white/10" />
           <PanamaTime />
@@ -65,7 +72,7 @@ export function Hero() {
         <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-8 items-end">
           <div>
             <h1 className="display-xl text-white">
-              {["Full-Stack", "Developer"].map((line, i) => (
+              {[t("heroLine1"), t("heroLine2")].map((line, i) => (
                 <motion.span
                   key={line}
                   initial={{ opacity: 0, y: 28 }}
@@ -82,7 +89,7 @@ export function Hero() {
                 transition={{ duration: 0.8, delay: 0.26, ease }}
                 className="block text-accent"
               >
-                especializado.
+                {t("heroLine3")}
               </motion.span>
             </h1>
 
@@ -92,9 +99,7 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.45, ease }}
               className="mt-8 text-lg md:text-xl text-foreground/65 max-w-md leading-relaxed text-pretty"
             >
-              Soy Carlos, <span className="text-foreground/90">Full-Stack Developer</span> en
-              Panamá. Especializado en TypeScript, React, Next.js y arquitectura backend escalable.
-              Construyo aplicaciones web modernas y robustas con atención al detalle.
+              {t("heroBio")}
             </motion.p>
 
             <motion.div
@@ -104,19 +109,19 @@ export function Hero() {
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
               <a
-                href={mailLink("Hablemos de un proyecto")}
+                href={mail()}
                 className="glow bg-accent text-black px-8 py-4 rounded-full font-semibold hover:bg-accent/90 transition-all flex items-center justify-center gap-2 group"
               >
-                Trabajemos juntos
+                {t("ctaWork")}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
-                href="/cv.pdf"
-                download="Carlos_Paris_CV.pdf"
+                href={cv.href}
+                download={cv.download}
                 className="glass text-foreground px-8 py-4 rounded-full font-medium hover:bg-white/5 transition-all flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4" />
-                Descargar CV
+                {t("ctaCv")}
               </a>
               <a
                 href={SITE.socials.github}
@@ -125,7 +130,7 @@ export function Hero() {
                 className="glass text-foreground px-8 py-4 rounded-full font-medium hover:bg-white/5 transition-all flex items-center justify-center gap-2"
               >
                 <GithubIcon className="w-4 h-4" />
-                Ver GitHub
+                {t("ctaGithub")}
               </a>
             </motion.div>
           </div>
@@ -141,7 +146,11 @@ export function Hero() {
           >
             <Image
               src="/carlos.jpeg"
-              alt="Carlos París, developer, retrato sobre fondo oscuro"
+              alt={
+                t("heroCaptionRole") === "Full-Stack Developer · Panama"
+                  ? "Carlos París, full-stack developer, portrait on a dark background"
+                  : "Carlos París, full-stack developer, retrato sobre fondo oscuro"
+              }
               fill
               priority
               sizes="(max-width: 1024px) 85vw, 48vw"
@@ -162,7 +171,7 @@ export function Hero() {
                   Carlos París
                 </span>
                 <span className="tick mt-2 block text-[11px] uppercase tracking-wider text-foreground/45">
-                  {SITE.role} · Panamá
+                  {t("heroCaptionRole")}
                 </span>
               </span>
             </figcaption>

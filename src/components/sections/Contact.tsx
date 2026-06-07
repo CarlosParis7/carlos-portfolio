@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Copy, Check, Download } from "lucide-react";
-import { SITE, mailLink } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import { useTranslations } from "@/lib/useTranslations";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}>
@@ -22,6 +23,7 @@ const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 function CopyEmailButton({ email }: { email: string }) {
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslations();
 
   function handleCopy() {
     navigator.clipboard.writeText(email).then(() => {
@@ -34,7 +36,7 @@ function CopyEmailButton({ email }: { email: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      aria-label={copied ? "Email copiado" : "Copiar email"}
+      aria-label={copied ? t("copiedEmail") : t("copyEmail")}
       className="px-3 py-3 bg-accent/80 text-black hover:bg-accent transition-colors relative w-10 flex items-center justify-center"
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -65,6 +67,7 @@ function CopyEmailButton({ email }: { email: string }) {
 }
 
 export function Contact() {
+  const { t, cv, mail } = useTranslations();
   const [name, setName] = useState("");
   const [project, setProject] = useState("");
   const [detail, setDetail] = useState("");
@@ -72,17 +75,17 @@ export function Contact() {
   function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
     const subject = project
-      ? `Proyecto: ${project}`
-      : "Hablemos de un proyecto";
+      ? `${t("mailFormSubjectPrefix")} ${project}`
+      : t("mailSubject");
     const body = [
-      name && `Hola Carlos, soy ${name}.`,
+      name && `${t("mailFormGreeting")} ${name}.`,
       detail && detail,
       "",
-      "Enviado desde carlosparis.dev",
+      t("mailFormSentFrom"),
     ]
       .filter(Boolean)
       .join("\n");
-    window.location.href = mailLink(subject, body);
+    window.location.href = mail(subject, body);
   }
 
   return (
@@ -92,19 +95,18 @@ export function Contact() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-center relative z-10">
         <div className="flex-1">
           <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-[0.95] tracking-tight text-balance">
-            Hablemos
+            {t("contactHeadA")}
             <br />
-            <span className="text-foreground/40">cuando quieras.</span>
+            <span className="text-foreground/40">{t("contactHeadB")}</span>
           </h2>
           <p className="text-lg text-foreground/55 mb-8 max-w-md leading-relaxed">
-            Si tienes una posición abierta, un proyecto o simplemente quieres
-            conversar sobre tech, te respondo rápido.
+            {t("contactSub")}
           </p>
 
           <div className="flex flex-wrap gap-3">
             <div className="inline-flex items-center rounded-full overflow-hidden border border-white/10">
               <a
-                href={mailLink()}
+                href={mail()}
                 className="inline-flex items-center gap-2 bg-accent text-black pl-5 pr-4 py-3 font-semibold hover:bg-accent/90 transition-colors text-sm"
               >
                 <Mail className="w-4 h-4 shrink-0" />
@@ -113,12 +115,12 @@ export function Contact() {
               <CopyEmailButton email={SITE.email} />
             </div>
             <a
-              href="/cv.pdf"
-              download="Carlos_Paris_CV.pdf"
+              href={cv.href}
+              download={cv.download}
               className="inline-flex items-center gap-2 glass px-5 py-3 rounded-full text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
             >
               <Download className="w-4 h-4" />
-              Descargar CV
+              {t("ctaCv")}
             </a>
             <a
               href={SITE.socials.github}
@@ -151,19 +153,19 @@ export function Contact() {
           >
             <div className="flex flex-col gap-4">
               <div>
-                <label htmlFor="contact-name" className="text-sm font-medium text-foreground/70 mb-1.5 block">Tu nombre</label>
-                <input id="contact-name" name="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/20" placeholder="Juan Pérez" />
+                <label htmlFor="contact-name" className="text-sm font-medium text-foreground/70 mb-1.5 block">{t("formName")}</label>
+                <input id="contact-name" name="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/30" placeholder={t("formNamePh")} />
               </div>
               <div>
-                <label htmlFor="contact-project" className="text-sm font-medium text-foreground/70 mb-1.5 block">Empresa o rol</label>
-                <input id="contact-project" name="project" type="text" value={project} onChange={(e) => setProject(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/20" placeholder="Frontend Dev en Acme, colaboración, etc." />
+                <label htmlFor="contact-project" className="text-sm font-medium text-foreground/70 mb-1.5 block">{t("formRole")}</label>
+                <input id="contact-project" name="project" type="text" value={project} onChange={(e) => setProject(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/30" placeholder={t("formRolePh")} />
               </div>
               <div>
-                <label htmlFor="contact-detail" className="text-sm font-medium text-foreground/70 mb-1.5 block">Cuéntame más</label>
-                <textarea id="contact-detail" name="detail" rows={3} value={detail} onChange={(e) => setDetail(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/20 resize-none" placeholder="Lo que tienes en mente…" />
+                <label htmlFor="contact-detail" className="text-sm font-medium text-foreground/70 mb-1.5 block">{t("formDetail")}</label>
+                <textarea id="contact-detail" name="detail" rows={3} value={detail} onChange={(e) => setDetail(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/30 resize-none" placeholder={t("formDetailPh")} />
               </div>
               <button type="submit" className="w-full mt-4 bg-white text-black font-semibold rounded-xl px-4 py-3 hover:bg-white/90 transition-colors">
-                Enviar por email
+                {t("formSubmit")}
               </button>
             </div>
           </motion.form>

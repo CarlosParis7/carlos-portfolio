@@ -1,12 +1,8 @@
-import { Mail } from "lucide-react";
-import { SITE, mailLink } from "@/lib/site";
+"use client";
 
-const navLinks = [
-  { label: "Sobre mí", href: "#about" },
-  { label: "Proyectos", href: "#projects" },
-  { label: "Preguntas frecuentes", href: "#faq" },
-  { label: "Contacto", href: "#contact" },
-];
+import { Mail } from "lucide-react";
+import { SITE } from "@/lib/site";
+import { useTranslations } from "@/lib/useTranslations";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}>
@@ -29,6 +25,15 @@ const socials = [
 ];
 
 export function Footer() {
+  const { t, mail } = useTranslations();
+
+  const navLinks = [
+    { label: t("navAbout"), href: "#about" },
+    { label: t("navProjects"), href: "#projects" },
+    { label: t("faqHead").replace(/\.$/, ""), href: "#faq" },
+    { label: t("navContact"), href: "#contact" },
+  ];
+
   return (
     <footer className="border-t border-white/5 px-6 pt-16 pb-10">
       <div className="max-w-7xl mx-auto">
@@ -39,13 +44,13 @@ export function Footer() {
               <span className="w-2 h-2 rounded-full bg-accent" />
               Carlos<span className="text-foreground/40">.dev</span>
             </span>
-            <p className="text-sm text-foreground/50 leading-relaxed">
-              {SITE.description}
+            <p className="text-sm text-foreground/55 leading-relaxed">
+              {t("footerDesc")}
             </p>
           </div>
 
           {/* Navigation */}
-          <nav aria-label="Pie de página" className="flex flex-col gap-3">
+          <nav aria-label={t("navContact")} className="flex flex-col gap-3">
             <span className="tick text-xs text-foreground/30">
               —
             </span>
@@ -66,7 +71,7 @@ export function Footer() {
               —
             </span>
             <a
-              href={mailLink()}
+              href={mail()}
               className="inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground transition-colors"
             >
               <Mail className="w-4 h-4" />
@@ -91,10 +96,10 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-foreground/40">
           <span>
-            &copy; {new Date().getFullYear()} {SITE.name}. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} {SITE.name}. {t("footerRights")}
           </span>
           <span className="flex items-center gap-1.5">
-            Hecho en Panamá <span aria-hidden="true">🇵🇦</span>
+            {t("footerBuilt")}
           </span>
         </div>
       </div>

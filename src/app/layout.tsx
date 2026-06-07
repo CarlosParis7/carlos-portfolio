@@ -4,6 +4,7 @@ import "./globals.css";
 import { GlobalSpotlight } from "@/components/ui/GlobalSpotlight";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { EmailFab } from "@/components/ui/EmailFab";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { Providers } from "@/components/Providers";
 import { SITE } from "@/lib/site";
 
@@ -101,7 +102,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${geist.variable} ${geistMono.variable} antialiased dark bg-background text-foreground`}
     >
       <body className="min-h-screen flex flex-col">
@@ -110,12 +111,15 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <a href="#main-content" className="skip-link">
-          Skip to main content
+          Saltar al contenido
         </a>
         <ScrollProgress />
         <GlobalSpotlight />
-        <Providers>{children}</Providers>
-        <EmailFab />
+        <Providers>
+          {children}
+          <LanguageToggle />
+          <EmailFab />
+        </Providers>
         <div className="grain-overlay" aria-hidden="true" />
       </body>
     </html>

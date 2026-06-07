@@ -4,9 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { mailLink } from "@/lib/site";
 import { useTranslations } from "@/lib/useTranslations";
-import { LanguageToggle } from "./LanguageToggle";
 
 
 function useActiveSection(ids: string[]) {
@@ -36,12 +34,12 @@ function useActiveSection(ids: string[]) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslations();
+  const { t, mail } = useTranslations();
 
   const links = [
-    { label: t("about"), href: "#about", id: "about" },
-    { label: t("projects"), href: "#projects", id: "projects" },
-    { label: t("contact"), href: "#contact", id: "contact" },
+    { label: t("navAbout"), href: "#about", id: "about" },
+    { label: t("navProjects"), href: "#projects", id: "projects" },
+    { label: t("navContact"), href: "#contact", id: "contact" },
   ];
 
   const active = useActiveSection(links.map((l) => l.id));
@@ -88,18 +86,16 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href={mailLink()}
+            href={mail()}
             className="hidden sm:inline-flex bg-foreground text-background px-5 py-2 rounded-full text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             {t("letsTalk")}
           </a>
 
-          <LanguageToggle />
-
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            aria-label={open ? t("skipLink") : "Open menu"}
+            aria-label={open ? t("closeMenu") : t("openMenu")}
             aria-expanded={open}
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-white/5 transition-colors"
           >
@@ -133,7 +129,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href={mailLink()}
+              href={mail()}
               onClick={() => setOpen(false)}
               className="mt-1 px-4 py-3 rounded-2xl text-base font-semibold text-center bg-foreground text-background hover:bg-foreground/90 transition-colors"
             >

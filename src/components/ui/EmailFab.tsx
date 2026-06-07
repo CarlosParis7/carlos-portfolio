@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Mail } from "lucide-react";
-import { mailLink } from "@/lib/site";
+import { useTranslations } from "@/lib/useTranslations";
 
 /** Sticky email button, revealed after the user scrolls past the hero. */
 export function EmailFab() {
+  const { t, mail } = useTranslations();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -20,8 +21,8 @@ export function EmailFab() {
     <AnimatePresence>
       {visible && (
         <motion.a
-          href={mailLink()}
-          aria-label="Escríbeme un email"
+          href={mail()}
+          aria-label={t("faqWrite")}
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
@@ -34,7 +35,7 @@ export function EmailFab() {
           <Mail className="relative z-10 w-6 h-6" strokeWidth={2} />
 
           <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-full bg-foreground px-3 py-1.5 text-sm font-medium text-background opacity-0 translate-x-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0">
-            Escríbeme
+            {t("faqWrite")}
           </span>
         </motion.a>
       )}

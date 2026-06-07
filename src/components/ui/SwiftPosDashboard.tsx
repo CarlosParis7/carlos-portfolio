@@ -1,8 +1,10 @@
 /**
  * Code-built replica of the SwiftPOS dashboard, used as the featured Showcase
  * mockup. Built in markup (not a screenshot) so it scales crisply and fits the
- * card at any size. Decorative only.
+ * card at any size. Decorative only. Labels follow the active language.
  */
+
+"use client";
 
 import {
   LayoutGrid,
@@ -16,22 +18,49 @@ import {
   ShoppingBag,
   AlertTriangle,
 } from "lucide-react";
+import { useTranslations } from "@/lib/useTranslations";
 
-const metrics = [
-  { label: "Ventas", value: "$60,985", Icon: DollarSign, tint: "text-emerald-600", bg: "bg-emerald-50" },
-  { label: "Ingresos", value: "$60,985", Icon: TrendingUp, tint: "text-violet-600", bg: "bg-violet-50" },
-  { label: "Órdenes", value: "50", Icon: ShoppingBag, tint: "text-slate-600", bg: "bg-slate-100" },
-  { label: "Stock", value: "3", Icon: AlertTriangle, tint: "text-rose-600", bg: "bg-rose-50" },
+const COPY = {
+  es: {
+    subtitle: "Panel de Control",
+    salesToday: "Ventas hoy",
+    nav: ["Panel", "Punto de Venta", "Inventario", "Clientes", "Reportes", "Ajustes"],
+    search: "Buscar en cualquier lugar...",
+    user: "Usuario",
+    role: "ADMINISTRADOR",
+    overline: "Panel principal",
+    title: "Resumen del Negocio",
+    metrics: ["Ventas", "Ingresos", "Órdenes", "Stock"],
+    salesPerf: "Rendimiento de Ventas",
+    last7: "Últimos 7 días",
+    lastTxns: "Últimas Transacciones",
+    days: ["Jue", "Vie", "Sáb", "Dom", "Lun", "Mar", "Mié"],
+  },
+  en: {
+    subtitle: "Control Panel",
+    salesToday: "Sales today",
+    nav: ["Dashboard", "Point of Sale", "Inventory", "Customers", "Reports", "Settings"],
+    search: "Search anywhere...",
+    user: "User",
+    role: "ADMIN",
+    overline: "Main panel",
+    title: "Business Overview",
+    metrics: ["Sales", "Revenue", "Orders", "Stock"],
+    salesPerf: "Sales Performance",
+    last7: "Last 7 days",
+    lastTxns: "Latest Transactions",
+    days: ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"],
+  },
+} as const;
+
+const metricMeta = [
+  { Icon: DollarSign, value: "$60,985", tint: "text-emerald-600", bg: "bg-emerald-50" },
+  { Icon: TrendingUp, value: "$60,985", tint: "text-violet-600", bg: "bg-violet-50" },
+  { Icon: ShoppingBag, value: "50", tint: "text-slate-600", bg: "bg-slate-100" },
+  { Icon: AlertTriangle, value: "3", tint: "text-rose-600", bg: "bg-rose-50" },
 ];
 
-const nav = [
-  { label: "Panel", Icon: LayoutGrid },
-  { label: "Punto de Venta", Icon: ShoppingCart },
-  { label: "Inventario", Icon: Package },
-  { label: "Clientes", Icon: Users },
-  { label: "Reportes", Icon: BarChart3 },
-  { label: "Ajustes", Icon: Settings },
-];
+const navIcons = [LayoutGrid, ShoppingCart, Package, Users, BarChart3, Settings];
 
 const txns = [
   { who: "iPhone 15", amount: "$2,599", c: "bg-indigo-500" },
@@ -44,6 +73,8 @@ const txns = [
 const SALES_PATH = "M0,30 C12,27 18,17 28,20 C38,23 44,12 56,15 C68,18 76,7 88,5 L100,9";
 
 export function SwiftPosDashboard() {
+  const { language } = useTranslations();
+  const t = COPY[language];
   return (
     <div
       aria-hidden="true"
@@ -57,30 +88,33 @@ export function SwiftPosDashboard() {
               </div>
           <div className="min-w-0">
             <div className="text-[10px] font-bold text-slate-800 leading-none truncate">SwiftPOS</div>
-            <div className="text-[7px] text-slate-400 leading-none mt-0.5">Panel de Control</div>
+            <div className="text-[7px] text-slate-400 leading-none mt-0.5">{t.subtitle}</div>
           </div>
         </div>
 
         <div className="rounded-lg bg-slate-50 border border-slate-200/80 p-2">
           <div className="flex items-center justify-between">
-            <span className="text-[7px] uppercase tracking-wide text-slate-400">Ventas hoy</span>
+            <span className="text-[7px] uppercase tracking-wide text-slate-400">{t.salesToday}</span>
             <span className="w-1 h-1 rounded-full bg-emerald-500" />
           </div>
           <div className="text-xs font-bold text-slate-800 mt-0.5">$62,230</div>
         </div>
 
         <nav className="flex flex-col gap-0.5 mt-0.5">
-          {nav.map(({ label, Icon }, i) => (
-            <div
-              key={label}
-              className={`flex items-center gap-1.5 text-[9px] font-medium rounded-md px-2 py-1.5 ${
-                i === 0 ? "bg-indigo-50 text-indigo-600" : "text-slate-500"
-              }`}
-            >
-              <Icon className="w-2.5 h-2.5 shrink-0" strokeWidth={2.2} />
-              <span className="truncate">{label}</span>
-            </div>
-          ))}
+          {t.nav.map((label, i) => {
+            const Icon = navIcons[i];
+            return (
+              <div
+                key={label}
+                className={`flex items-center gap-1.5 text-[9px] font-medium rounded-md px-2 py-1.5 ${
+                  i === 0 ? "bg-indigo-50 text-indigo-600" : "text-slate-500"
+                }`}
+              >
+                <Icon className="w-2.5 h-2.5 shrink-0" strokeWidth={2.2} />
+                <span className="truncate">{label}</span>
+              </div>
+            );
+          })}
         </nav>
       </aside>
 
@@ -89,12 +123,12 @@ export function SwiftPosDashboard() {
         {/* Top bar */}
         <div className="flex items-center gap-2 px-3 h-8 border-b border-slate-200/70 bg-white shrink-0">
           <div className="flex-1 h-5 rounded-full bg-slate-100 border border-slate-200/70 flex items-center px-2">
-            <span className="text-[7px] text-slate-400">Buscar en cualquier lugar...</span>
+            <span className="text-[7px] text-slate-400">{t.search}</span>
           </div>
           <div className="hidden md:flex items-center gap-1.5 shrink-0">
             <div className="text-right leading-none">
-              <div className="text-[8px] font-semibold text-slate-700">Usuario</div>
-              <div className="text-[6px] text-slate-400">ADMINISTRADOR</div>
+              <div className="text-[8px] font-semibold text-slate-700">{t.user}</div>
+              <div className="text-[6px] text-slate-400">{t.role}</div>
             </div>
             <div className="w-4 h-4 rounded-full bg-gradient-to-br from-slate-200 to-slate-300" />
           </div>
@@ -104,18 +138,18 @@ export function SwiftPosDashboard() {
         <div className="flex-1 p-2.5 min-h-0 flex flex-col gap-2 overflow-hidden">
           <div>
             <div className="text-[7px] font-bold uppercase tracking-wide text-indigo-500">
-              Panel principal
+              {t.overline}
             </div>
             <div className="text-[13px] font-bold text-slate-900 leading-tight mt-0.5">
-              Resumen del Negocio
+              {t.title}
             </div>
           </div>
 
           {/* Metric cards */}
           <div className="grid grid-cols-4 gap-1.5">
-            {metrics.map(({ label, value, Icon, tint, bg }) => (
+            {metricMeta.map(({ value, Icon, tint, bg }, i) => (
               <div
-                key={label}
+                key={i}
                 className="rounded-lg bg-white border border-slate-200/70 p-1.5 shadow-sm"
               >
                 <div className={`w-4 h-4 rounded-md ${bg} flex items-center justify-center mb-1`}>
@@ -124,7 +158,7 @@ export function SwiftPosDashboard() {
                 <div className="text-[10px] font-bold text-slate-900 leading-none truncate">
                   {value}
                 </div>
-                <div className="text-[7px] text-slate-400 mt-0.5">{label}</div>
+                <div className="text-[7px] text-slate-400 mt-0.5">{t.metrics[i]}</div>
               </div>
             ))}
           </div>
@@ -135,8 +169,8 @@ export function SwiftPosDashboard() {
             <div className="rounded-lg bg-white border border-slate-200/70 p-2 shadow-sm flex flex-col min-h-0">
               <div className="flex items-center justify-between shrink-0">
                 <div>
-                  <div className="text-[8px] font-bold text-slate-800">Rendimiento de Ventas</div>
-                  <div className="text-[6px] text-slate-400">Últimos 7 días</div>
+                  <div className="text-[8px] font-bold text-slate-800">{t.salesPerf}</div>
+                  <div className="text-[6px] text-slate-400">{t.last7}</div>
                 </div>
                 <div className="text-[9px] font-bold text-slate-900">$60,985</div>
               </div>
@@ -166,7 +200,7 @@ export function SwiftPosDashboard() {
                 </svg>
               </div>
               <div className="flex justify-between mt-1 text-[6px] text-slate-300 shrink-0">
-                {["Jue", "Vie", "Sáb", "Dom", "Lun", "Mar", "Mié"].map((d) => (
+                {t.days.map((d) => (
                   <span key={d}>{d}</span>
                 ))}
               </div>
@@ -175,7 +209,7 @@ export function SwiftPosDashboard() {
             {/* Transactions */}
             <div className="rounded-lg bg-white border border-slate-200/70 p-2 shadow-sm flex flex-col min-h-0">
               <div className="text-[8px] font-bold text-slate-800 mb-1.5 shrink-0">
-                Últimas Transacciones
+                {t.lastTxns}
               </div>
               <div className="flex flex-col gap-1.5 overflow-hidden">
                 {txns.map((t, i) => (

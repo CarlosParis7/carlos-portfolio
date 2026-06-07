@@ -11,7 +11,7 @@ export const SITE = {
   email: "carlosparis391@gmail.com",
   socials: {
     github: "https://github.com/CarlosParis7",
-    linkedin: "https://www.linkedin.com/in/carlosparis21/",
+    linkedin: "https://www.linkedin.com/in/carlos-paris21",
     instagram: "https://instagram.com/bytelabs_",
   },
 } as const;

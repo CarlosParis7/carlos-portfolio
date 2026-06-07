@@ -1,43 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Monitor, Cpu, Code2, LayoutDashboard, CreditCard } from "lucide-react";
-
-const services = [
-  {
-    title: "Frontend Modern",
-    description:
-      "React, Next.js, TypeScript. Componentes reutilizables, SSR/SSG, optimización de performance y UX completa.",
-    icon: Code2,
-  },
-  {
-    title: "Backend Escalable",
-    description:
-      "Node.js, APIs REST, autenticación, bases de datos relacionales y no-SQL. Arquitectura limpia y mantenible.",
-    icon: Monitor,
-  },
-  {
-    title: "Bases de Datos",
-    description:
-      "PostgreSQL, Supabase, diseño de esquemas normalizados, queries optimizadas, indexación y migraciones.",
-    icon: Cpu,
-  },
-  {
-    title: "UI/UX & Diseño",
-    description: "Interfaces intuitivas, accesibilidad (WCAG), diseño responsive, Tailwind CSS, componentes reutilizables.",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "DevOps & Deploy",
-    description:
-      "CI/CD, Vercel, Docker, Git, testing automatizado, monitoreo. Pipelines confiables para producción.",
-    icon: CreditCard,
-  },
-];
+import { Code2, Server, Database, Palette, Rocket } from "lucide-react";
+import { useTranslations } from "@/lib/useTranslations";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export function Services() {
+  const { t } = useTranslations();
+
+  const services = [
+    { title: t("svcFrontendTitle"), description: t("svcFrontendDesc"), icon: Code2 },
+    { title: t("svcBackendTitle"), description: t("svcBackendDesc"), icon: Server },
+    { title: t("svcDbTitle"), description: t("svcDbDesc"), icon: Database },
+    { title: t("svcUiTitle"), description: t("svcUiDesc"), icon: Palette },
+    { title: t("svcDevopsTitle"), description: t("svcDevopsDesc"), icon: Rocket },
+  ];
+
   const [feature, ...rest] = services;
   const FeatureIcon = feature.icon;
 
@@ -46,9 +25,9 @@ export function Services() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-20">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[0.95] text-balance max-w-xl">
-            Mis habilidades,
+            {t("servicesHeadA")}
             <br />
-            <span className="text-foreground/40">dominio técnico.</span>
+            <span className="text-foreground/40">{t("servicesHeadB")}</span>
           </h2>
         </div>
 
@@ -91,7 +70,10 @@ export function Services() {
                   <span className="tick text-sm text-foreground/30 pt-1 w-10 shrink-0">
                     0{i + 2}
                   </span>
-                  <Icon className="w-6 h-6 text-accent/70 shrink-0 mt-0.5 group-hover:text-accent transition-colors" strokeWidth={1.75} />
+                  <Icon
+                    className="w-6 h-6 text-accent/70 shrink-0 mt-0.5 group-hover:text-accent transition-colors"
+                    strokeWidth={1.75}
+                  />
                   <div>
                     <h3 className="text-lg font-semibold mb-1 group-hover:text-white transition-colors">
                       {service.title}

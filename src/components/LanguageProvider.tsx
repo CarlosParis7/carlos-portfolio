@@ -9,24 +9,22 @@ type LanguageContextType = {
 };
 
 const LanguageContext = createContext<LanguageContextType>({
-  language: "en",
+  language: "es",
   setLanguage: () => {},
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
-  const [mounted, setMounted] = useState(false);
+  // Lazy initializer reads the saved preference once, before first paint,
+  // avoiding a setState-in-effect cascade. SSR falls back to "es".
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window === "undefined") return "es";
+    const saved = localStorage.getItem("language");
+    return saved === "en" || saved === "es" ? saved : "es";
+  });
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("language") as Language | null;
-    if (savedLanguage && (savedLanguage === "en" || savedLanguage === "es")) {
-      setLanguageState(savedLanguage);
-      document.documentElement.lang = savedLanguage;
-    } else {
-      document.documentElement.lang = "en";
-    }
-    setMounted(true);
-  }, []);
+    document.documentElement.lang = language;
+  }, [language]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

@@ -15,12 +15,16 @@ function hasFinePointer() {
 export function GlobalSpotlight() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  // Decide on the client only — checking the pointer during SSR/first render
-  // causes a hydration mismatch (server has no `window`).
+  // Decide on the client only. SSR and the first client render both start
+  // `false` (server has no `window`), so hydration matches; a layout effect
+  // then enables it before paint on fine-pointer devices.
   const [enabled, setEnabled] = useState(false);
 
+  // Syncing with a browser media query that doesn't exist during SSR; the
+  // one-time enable is intentional, not a render-derived value.
   useEffect(() => {
-    setEnabled(hasFinePointer());
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    if (hasFinePointer()) setEnabled(true);
   }, []);
 
   useEffect(() => {

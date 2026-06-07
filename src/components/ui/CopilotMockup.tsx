@@ -4,11 +4,31 @@
  * it scales crisply and fits the card at any size. Decorative only.
  */
 
-import { FileText, Sparkles } from "lucide-react";
+"use client";
 
-const docs = ["Manual.pdf", "Contratos.docx", "Políticas.pdf"];
+import { FileText, Sparkles } from "lucide-react";
+import { useTranslations } from "@/lib/useTranslations";
+
+const COPY = {
+  es: {
+    sources: "Fuentes",
+    docs: ["Manual.pdf", "Contratos.docx", "Políticas.pdf"],
+    online: "Asistente · en línea",
+    citation: "Manual.pdf · p.4",
+    placeholder: "Pregunta sobre tus documentos...",
+  },
+  en: {
+    sources: "Sources",
+    docs: ["Manual.pdf", "Contracts.docx", "Policies.pdf"],
+    online: "Assistant · online",
+    citation: "Manual.pdf · p.4",
+    placeholder: "Ask about your documents...",
+  },
+} as const;
 
 export function CopilotMockup() {
+  const { language } = useTranslations();
+  const t = COPY[language];
   return (
     <div
       aria-hidden="true"
@@ -20,8 +40,8 @@ export function CopilotMockup() {
           <Sparkles className="w-3 h-3 text-emerald-400 shrink-0" strokeWidth={2.2} />
           <span className="text-[9px] font-bold text-white truncate">Atlas</span>
         </div>
-        <span className="text-[7px] uppercase tracking-wide text-slate-500">Fuentes</span>
-        {docs.map((d) => (
+        <span className="text-[7px] uppercase tracking-wide text-slate-500">{t.sources}</span>
+        {t.docs.map((d) => (
           <div
             key={d}
             className="flex items-center gap-1.5 rounded-md bg-white/[0.03] border border-white/5 px-1.5 py-1"
@@ -36,7 +56,7 @@ export function CopilotMockup() {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex items-center gap-1.5 px-3 h-7 border-b border-white/5 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span className="text-[8px] font-medium text-slate-300">Asistente · en línea</span>
+          <span className="text-[8px] font-medium text-slate-300">{t.online}</span>
         </div>
 
         <div className="flex-1 p-2.5 flex flex-col gap-2 min-h-0 overflow-hidden">
@@ -60,13 +80,13 @@ export function CopilotMockup() {
             {/* citation chip */}
             <div className="mt-1.5 inline-flex items-center gap-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5">
               <FileText className="w-2 h-2 text-emerald-400" strokeWidth={2} />
-              <span className="text-[6px] text-emerald-300">Manual.pdf · p.4</span>
+              <span className="text-[6px] text-emerald-300">{t.citation}</span>
             </div>
           </div>
 
           {/* Composer */}
           <div className="mt-auto flex items-center gap-1.5 rounded-full bg-white/[0.05] border border-white/10 px-2.5 py-1.5 shrink-0">
-            <span className="text-[8px] text-slate-500 flex-1 truncate">Pregunta sobre tus documentos...</span>
+            <span className="text-[8px] text-slate-500 flex-1 truncate">{t.placeholder}</span>
             <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
               <span className="text-[8px] text-white leading-none">↑</span>
             </div>

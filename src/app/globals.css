@@ -44,6 +44,10 @@ body {
     bottom: max(1.5rem, env(safe-area-inset-bottom));
     right: max(1.5rem, env(safe-area-inset-right));
   }
+  .safe-bottom-left {
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    left: max(1.5rem, env(safe-area-inset-left));
+  }
 }
 
 .glass {
