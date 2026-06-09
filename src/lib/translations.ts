@@ -36,6 +36,15 @@ export const translations = {
       "He levantado SaaS desde cero, sistemas POS para comercios reales, integraciones de IA con RAG y plataformas que no se pueden caer. Escribo código que el próximo dev (a veces yo mismo en seis meses) pueda leer sin maldecir.",
     aboutP3Pre: "Busco proyectos donde el detalle importe y donde pueda ",
     aboutP3Strong: "dejar el código mejor de lo que lo encontré.",
+    aboutRole: "Full-Stack Developer",
+    aboutLocation: "Ciudad de Panamá · GMT-5",
+    aboutAvailable: "Disponible para proyectos",
+    aboutHl1Value: "SaaS",
+    aboutHl1Label: "construidos desde cero",
+    aboutHl2Value: "POS",
+    aboutHl2Label: "en comercios reales",
+    aboutHl3Value: "RAG",
+    aboutHl3Label: "integraciones de IA",
 
     // Stats / facts (rewritten as a sentence-led fact strip, not metric cards)
     factsHead: "En números, rápido.",
@@ -190,6 +199,15 @@ export const translations = {
       "I've built SaaS from zero, POS systems for real shops, RAG-based AI integrations, and platforms that can't go down. I write code the next developer (sometimes me, six months later) can read without cursing.",
     aboutP3Pre: "I look for projects where the details matter and where I can ",
     aboutP3Strong: "leave the code better than I found it.",
+    aboutRole: "Full-Stack Developer",
+    aboutLocation: "Panama City · GMT-5",
+    aboutAvailable: "Available for projects",
+    aboutHl1Value: "SaaS",
+    aboutHl1Label: "built from scratch",
+    aboutHl2Value: "POS",
+    aboutHl2Label: "in real businesses",
+    aboutHl3Value: "RAG",
+    aboutHl3Label: "AI integrations",
 
     // Stats / facts
     factsHead: "The short version.",

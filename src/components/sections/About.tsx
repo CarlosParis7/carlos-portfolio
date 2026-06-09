@@ -15,10 +15,39 @@ export function About() {
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[0.95] text-balance">
             {t("aboutHeadA")}
             <br />
-            <span className="text-foreground/40">{t("aboutHeadB")}</span>
+            <span className="text-foreground/50">{t("aboutHeadB")}</span>
             <br />
             {t("aboutHeadC")}
           </h2>
+
+          {/* Identity anchor: fills the left column, balances the long copy on the right */}
+          <div className="mt-10 flex items-center gap-4">
+            <img
+              src="/carlos.jpeg"
+              alt="Carlos Paris"
+              width={56}
+              height={56}
+              className="h-14 w-14 rounded-full object-cover ring-1 ring-white/15"
+            />
+            <div className="min-w-0">
+              <p className="font-semibold text-white leading-tight">
+                {t("aboutRole")}
+              </p>
+              <p className="tick text-sm text-foreground/50 mt-0.5">
+                {t("aboutLocation")}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+            </span>
+            <span className="tick text-xs text-foreground/70">
+              {t("aboutAvailable")}
+            </span>
+          </div>
         </div>
 
         <motion.div
@@ -35,21 +64,21 @@ export function About() {
             <span className="text-foreground">{t("aboutP3Strong")}</span>
           </p>
 
-          <div className="pt-4 flex flex-wrap gap-2">
+          {/* Proof strip: what I've actually shipped, not a tech tag cloud */}
+          <div className="pt-6 mt-2 border-t border-white/10 flex flex-wrap gap-x-10 gap-y-5">
             {[
-              "TypeScript",
-              "React / Next.js",
-              "Node",
-              "Supabase / Postgres",
-              "IA / RAG",
-              "UI/UX",
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="tick text-sm px-3 py-1.5 rounded-full border border-white/10 text-foreground/70"
-              >
-                {tag}
-              </span>
+              { value: t("aboutHl1Value"), label: t("aboutHl1Label") },
+              { value: t("aboutHl2Value"), label: t("aboutHl2Label") },
+              { value: t("aboutHl3Value"), label: t("aboutHl3Label") },
+            ].map((hl) => (
+              <div key={hl.label}>
+                <div className="text-2xl font-bold tracking-tight text-white leading-none">
+                  {hl.value}
+                </div>
+                <p className="mt-1.5 text-sm text-foreground/50 max-w-[16ch] leading-snug">
+                  {hl.label}
+                </p>
+              </div>
             ))}
           </div>
         </motion.div>

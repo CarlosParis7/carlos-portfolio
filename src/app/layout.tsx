@@ -102,16 +102,24 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="en"
       className={`${geist.variable} ${geistMono.variable} antialiased dark bg-background text-foreground`}
     >
       <body className="min-h-screen flex flex-col">
+        {/* Pre-paint language resolution: keeps <html lang> in sync with the
+            saved choice / browser locale before first paint, mirroring
+            LanguageProvider so non-Spanish visitors never flash Spanish. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem("language");var l=(s==="en"||s==="es")?s:((navigator.language||"").toLowerCase().indexOf("es")===0?"es":"en");document.documentElement.lang=l;}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <a href="#main-content" className="skip-link">
-          Saltar al contenido
+          Skip to main content
         </a>
         <ScrollProgress />
         <GlobalSpotlight />
