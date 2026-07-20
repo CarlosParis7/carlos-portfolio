@@ -82,6 +82,7 @@ export const translations = {
     showcaseHeadB: "diseñé y construí.",
     showcaseSub: "De la arquitectura al deploy: diseño, frontend, backend y base de datos.",
     viewDemo: "Ver demo",
+    demoCreds: "Acceso demo",
     statusLive: "En producción",
     statusDelivered: "Entregado",
     projSwiftDesc:
@@ -245,6 +246,7 @@ export const translations = {
     showcaseHeadB: "designed and built.",
     showcaseSub: "From architecture to deploy: design, frontend, backend and database.",
     viewDemo: "View demo",
+    demoCreds: "Demo access",
     statusLive: "Live",
     statusDelivered: "Delivered",
     projSwiftDesc:

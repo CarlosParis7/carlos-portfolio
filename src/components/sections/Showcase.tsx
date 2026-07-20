@@ -17,6 +17,8 @@ type Project = {
   mockup: React.ReactNode;
   /** Live demo URL. When present the whole card becomes a link. */
   url?: string;
+  /** Demo login shown on the card so recruiters can get straight in. */
+  demo?: { user: string; pass: string };
 };
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -26,11 +28,13 @@ function ProjectCard({
   index,
   featured = false,
   demoLabel,
+  demoCredsLabel,
 }: {
   project: Project;
   index: number;
   featured?: boolean;
   demoLabel: string;
+  demoCredsLabel: string;
 }) {
   const interactive = Boolean(project.url);
 
@@ -66,6 +70,20 @@ function ProjectCard({
           <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent w-fit">
             {demoLabel}
             <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
+        )}
+
+        {/* Demo credentials — recruiters get straight in, no signup */}
+        {project.demo && (
+          <span className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 tick text-xs">
+            <span className="text-foreground/45">{demoCredsLabel}</span>
+            <span className="rounded-md border border-white/10 bg-white/[0.06] px-2 py-0.5 text-foreground/90">
+              {project.demo.user}
+            </span>
+            <span className="text-foreground/30">/</span>
+            <span className="rounded-md border border-white/10 bg-white/[0.06] px-2 py-0.5 text-foreground/90">
+              {project.demo.pass}
+            </span>
           </span>
         )}
       </div>
@@ -130,7 +148,8 @@ export function Showcase() {
       description: t("projSwiftDesc"),
       color: "from-orange-500/20 to-red-500/20",
       mockup: <SwiftPosDashboard />,
-      url: "https://swiftpos-nine.vercel.app/",
+      url: "https://swiftpospty.vercel.app/login",
+      demo: { user: "demo", pass: "demo123" },
     },
     {
       title: "BoxExpress",
@@ -178,13 +197,20 @@ export function Showcase() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <ProjectCard project={featured} index={0} featured demoLabel={t("viewDemo")} />
+          <ProjectCard
+            project={featured}
+            index={0}
+            featured
+            demoLabel={t("viewDemo")}
+            demoCredsLabel={t("demoCreds")}
+          />
           {rest.map((project, i) => (
             <ProjectCard
               key={project.title}
               project={project}
               index={i + 1}
               demoLabel={t("viewDemo")}
+              demoCredsLabel={t("demoCreds")}
             />
           ))}
         </div>
