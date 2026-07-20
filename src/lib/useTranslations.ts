@@ -6,8 +6,8 @@ import { SITE } from "./site";
 
 // CV files live in /public. Spanish and English versions are served by language.
 const CV = {
-  es: { href: "/cv-es.pdf", download: "Carlos_Paris_CV_ES.pdf" },
-  en: { href: "/cv-en.pdf", download: "Carlos_Paris_CV_EN.pdf" },
+  es: { href: "/cv-es.pdf", download: "CV Carlos Paris.pdf" },
+  en: { href: "/cv-en.pdf", download: "Resume Carlos Paris.pdf" },
 } as const;
 
 export function useTranslations() {
