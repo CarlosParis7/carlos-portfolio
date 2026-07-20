@@ -34,7 +34,7 @@ function useActiveSection(ids: string[]) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { t, mail } = useTranslations();
+  const { t } = useTranslations();
 
   const links = [
     { label: t("navAbout"), href: "#about", id: "about" },
@@ -86,7 +86,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href={mail()}
+            href="#contact"
             className="hidden sm:inline-flex bg-foreground text-background px-5 py-2 rounded-full text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             {t("letsTalk")}
@@ -97,7 +97,7 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? t("closeMenu") : t("openMenu")}
             aria-expanded={open}
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-white/5 transition-colors"
+            className="md:hidden flex items-center justify-center w-11 h-11 rounded-full text-foreground hover:bg-white/5 transition-colors"
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -129,7 +129,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href={mail()}
+              href="#contact"
               onClick={() => setOpen(false)}
               className="mt-1 px-4 py-3 rounded-2xl text-base font-semibold text-center bg-foreground text-background hover:bg-foreground/90 transition-colors"
             >

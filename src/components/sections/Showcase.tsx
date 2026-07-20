@@ -51,7 +51,7 @@ function ProjectCard({
           featured ? "lg:order-1 lg:justify-center lg:p-8" : "absolute inset-x-0 top-0 min-h-[190px]"
         }`}
       >
-        <p className="tick text-xs text-accent/60 mb-2">
+        <p className={`tick text-xs text-accent/60 mb-2 ${featured ? "" : "pr-24"}`}>
           {project.category}
         </p>
         <h3 className={`font-bold tracking-tight mb-2 ${featured ? "text-3xl md:text-4xl" : "text-xl"}`}>
@@ -95,8 +95,8 @@ function ProjectCard({
   } ${interactive ? "cursor-pointer transition-transform duration-300 hover:-translate-y-1 focus-visible:-translate-y-1" : ""}`;
 
   const motionProps = {
-    initial: { opacity: 0, y: 28 },
-    whileInView: { opacity: 1, y: 0 },
+    initial: { y: 28 },
+    whileInView: { y: 0 },
     viewport: { once: true },
     transition: { delay: index * 0.08, duration: 0.6, ease },
     className,
@@ -172,7 +172,7 @@ export function Showcase() {
             <br />
             <span className="text-foreground/40">{t("showcaseHeadB")}</span>
           </h2>
-          <p className="text-sm text-foreground/40 max-w-xs leading-relaxed sm:text-right">
+          <p className="text-sm text-foreground/55 max-w-xs leading-relaxed sm:text-right">
             {t("showcaseSub")}
           </p>
         </div>

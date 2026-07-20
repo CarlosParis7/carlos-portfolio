@@ -22,7 +22,7 @@ export function Process() {
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[0.95] text-balance">
             {t("processHead")}
           </h2>
-          <p className="text-sm text-foreground/40 max-w-xs leading-relaxed sm:text-right">
+          <p className="text-sm text-foreground/55 max-w-xs leading-relaxed sm:text-right">
             {t("processSub")}
           </p>
         </div>
@@ -36,8 +36,8 @@ export function Process() {
             {steps.map((step, i) => (
               <motion.div
                 key={step.tag}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ y: 20 }}
+                whileInView={{ y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.55, ease }}
                 className="relative group pt-14 pb-8 pr-8 border-b lg:border-b-0 lg:border-r border-white/8 last:border-0"

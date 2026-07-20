@@ -51,8 +51,8 @@ export function About() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: 24 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease }}
           className="space-y-6 text-lg text-foreground/65 leading-relaxed max-w-xl"

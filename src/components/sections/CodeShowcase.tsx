@@ -299,7 +299,7 @@ export function CodeShowcase() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
-              className="text-sm text-foreground/40 max-w-xs sm:text-right leading-relaxed"
+              className="text-sm text-foreground/55 max-w-xs sm:text-right leading-relaxed"
             >
               {snippet.desc}
             </motion.p>

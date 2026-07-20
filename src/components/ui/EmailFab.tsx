@@ -7,7 +7,7 @@ import { useTranslations } from "@/lib/useTranslations";
 
 /** Sticky email button, revealed after the user scrolls past the hero. */
 export function EmailFab() {
-  const { t, mail } = useTranslations();
+  const { t } = useTranslations();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function EmailFab() {
     <AnimatePresence>
       {visible && (
         <motion.a
-          href={mail()}
+          href="#contact"
           aria-label={t("faqWrite")}
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}

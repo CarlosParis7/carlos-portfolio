@@ -34,8 +34,8 @@ export function Services() {
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
           {/* Featured service: large accent-washed block, not a flat card */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ y: 24 }}
+            whileInView={{ y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
             className="hairline accent-wash rounded-3xl p-8 md:p-10 flex flex-col justify-between min-h-[340px] relative overflow-hidden"
@@ -61,8 +61,8 @@ export function Services() {
               return (
                 <motion.div
                   key={service.title}
-                  initial={{ opacity: 0, x: 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ x: 16 }}
+                  whileInView={{ x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.07, ease }}
                   className="group flex items-start gap-5 py-5 border-b border-white/10 first:border-t hover:px-3 transition-[padding] duration-300"

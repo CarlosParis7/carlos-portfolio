@@ -2,10 +2,17 @@
 
 import { MotionConfig } from "framer-motion";
 import { LanguageProvider } from "./LanguageProvider";
+import type { Language } from "@/lib/translations";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  initialLanguage,
+  children,
+}: {
+  initialLanguage: Language;
+  children: React.ReactNode;
+}) {
   return (
-    <LanguageProvider>
+    <LanguageProvider initialLanguage={initialLanguage}>
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </LanguageProvider>
   );

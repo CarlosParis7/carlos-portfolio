@@ -41,7 +41,7 @@ export function Trust() {
   return (
     <section className="py-20 md:py-24 border-y border-white/5 bg-white/[0.01] overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <p className="text-sm text-foreground/40 mb-12 px-6 text-center">
+        <p className="text-sm text-foreground/55 mb-12 px-6 text-center">
           {t("trustLabel")}
         </p>
 

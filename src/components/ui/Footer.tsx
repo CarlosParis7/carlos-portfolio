@@ -51,7 +51,7 @@ export function Footer() {
 
           {/* Navigation */}
           <nav aria-label={t("navContact")} className="flex flex-col gap-3">
-            <span className="tick text-xs text-foreground/30">
+            <span className="tick text-xs text-foreground/55">
               —
             </span>
             {navLinks.map((link) => (
@@ -67,7 +67,7 @@ export function Footer() {
 
           {/* Contact */}
           <div className="flex flex-col gap-4">
-            <span className="tick text-xs text-foreground/30">
+            <span className="tick text-xs text-foreground/55">
               —
             </span>
             <a
@@ -94,7 +94,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-foreground/40">
+        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-foreground/55">
           <span>
             &copy; {new Date().getFullYear()} {SITE.name}. {t("footerRights")}
           </span>

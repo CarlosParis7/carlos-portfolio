@@ -26,8 +26,8 @@ export function Stats() {
           {facts.map((fact, i) => (
             <motion.div
               key={fact.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ y: 16 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.55, ease }}
               className="flex-1 sm:px-8 first:sm:pl-0 sm:border-l first:sm:border-l-0 border-white/10"

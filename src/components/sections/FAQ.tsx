@@ -12,8 +12,8 @@ function FaqItem({ faq, index }: { faq: Faq; index: number }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ y: 16 }}
+      whileInView={{ y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05, duration: 0.4 }}
       className="border-b border-white/8 overflow-hidden"
@@ -83,7 +83,7 @@ export function FAQ() {
         </div>
 
         <div className="mt-12 text-center">
-          <p className="text-foreground/40 mb-4 text-sm">{t("faqMore")}</p>
+          <p className="text-foreground/55 mb-4 text-sm">{t("faqMore")}</p>
           <a
             href={mail(t("mailSubjectProfile"))}
             className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full font-medium hover:bg-white/5 transition-colors"

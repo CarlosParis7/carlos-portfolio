@@ -13,23 +13,17 @@ const LanguageContext = createContext<LanguageContextType>({
   setLanguage: () => {},
 });
 
-/**
- * Resolves the initial language: an explicit saved choice wins; otherwise we
- * detect from the browser locale and default to English for any non-Spanish
- * visitor (the portfolio targets the US job market). Mirrors the pre-paint
- * script in layout.tsx so SSR ("en") and the client agree without a flash.
- */
-function resolveInitialLanguage(): Language {
-  if (typeof window === "undefined") return "en";
-  const saved = localStorage.getItem("language");
-  if (saved === "en" || saved === "es") return saved;
-  return navigator.language?.toLowerCase().startsWith("es") ? "es" : "en";
-}
-
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // Lazy initializer resolves the language once, before first paint,
-  // avoiding a setState-in-effect cascade. SSR falls back to "en".
-  const [language, setLanguageState] = useState<Language>(resolveInitialLanguage);
+export function LanguageProvider({
+  initialLanguage,
+  children,
+}: {
+  initialLanguage: Language;
+  children: React.ReactNode;
+}) {
+  // The server already resolved the language (cookie → Accept-Language header)
+  // and rendered <html lang> plus every string in it. Hydrating from that same
+  // value keeps SSR and the client identical: no mismatch, no flash of English.
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -37,7 +31,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem("language", lang);
+    // A cookie (not just localStorage) so the next SSR renders in this language.
+    document.cookie = `language=${lang}; path=/; max-age=31536000; samesite=lax`;
     document.documentElement.lang = lang;
   };
 

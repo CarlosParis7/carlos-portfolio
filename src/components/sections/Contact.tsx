@@ -146,8 +146,8 @@ export function Contact() {
         <div className="flex-1 w-full max-w-md">
           <motion.form
             onSubmit={handleSubmit}
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ x: 20 }}
+            whileInView={{ x: 0 }}
             viewport={{ once: true }}
             className="glass rounded-3xl p-8 border border-white/10"
           >

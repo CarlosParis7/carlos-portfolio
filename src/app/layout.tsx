@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies, headers } from "next/headers";
 import "./globals.css";
 import { GlobalSpotlight } from "@/components/ui/GlobalSpotlight";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -7,6 +8,19 @@ import { EmailFab } from "@/components/ui/EmailFab";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { Providers } from "@/components/Providers";
 import { SITE } from "@/lib/site";
+import { translations, type Language } from "@/lib/translations";
+
+// Resolve the language on the server so SSR renders the right copy and <html
+// lang>, and the client hydrates from the same value (no mismatch, no flash).
+// A saved cookie wins; otherwise fall back to the browser's Accept-Language.
+// Reading cookies/headers opts this route into dynamic rendering, which is the
+// price of a server-known locale.
+async function resolveLanguage(): Promise<Language> {
+  const saved = (await cookies()).get("language")?.value;
+  if (saved === "en" || saved === "es") return saved;
+  const accept = (await headers()).get("accept-language")?.toLowerCase() ?? "";
+  return accept.startsWith("es") ? "es" : "en";
+}
 
 const geist = Geist({
   variable: "--font-geist",
@@ -95,35 +109,28 @@ const jsonLd = {
   sameAs: [SITE.socials.github, SITE.socials.linkedin, SITE.socials.instagram],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await resolveLanguage();
   return (
     <html
-      lang="en"
-      className={`${geist.variable} ${geistMono.variable} antialiased dark bg-background text-foreground`}
+      lang={lang}
+      className={`${geist.variable} ${geistMono.variable} antialiased dark scroll-smooth scroll-pt-24 bg-background text-foreground`}
     >
       <body className="min-h-screen flex flex-col">
-        {/* Pre-paint language resolution: keeps <html lang> in sync with the
-            saved choice / browser locale before first paint, mirroring
-            LanguageProvider so non-Spanish visitors never flash Spanish. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem("language");var l=(s==="en"||s==="es")?s:((navigator.language||"").toLowerCase().indexOf("es")===0?"es":"en");document.documentElement.lang=l;}catch(e){}})();`,
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <a href="#main-content" className="skip-link">
-          Skip to main content
+          {translations[lang].skipLink}
         </a>
         <ScrollProgress />
         <GlobalSpotlight />
-        <Providers>
+        <Providers initialLanguage={lang}>
           {children}
           <LanguageToggle />
           <EmailFab />

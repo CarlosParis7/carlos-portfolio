@@ -45,7 +45,7 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export function Hero() {
-  const { t, cv, mail } = useTranslations();
+  const { t, cv } = useTranslations();
   return (
     <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-16 px-6 overflow-hidden">
       {/* Off-center accent glow + grid */}
@@ -58,7 +58,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease }}
-          className="flex items-center gap-4 text-xs text-foreground/40 tick mb-8"
+          className="flex items-center gap-4 text-xs text-foreground/55 tick mb-8"
         >
           <span className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
@@ -109,7 +109,7 @@ export function Hero() {
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
               <a
-                href={mail()}
+                href="#contact"
                 className="glow bg-accent text-black px-8 py-4 rounded-full font-semibold hover:bg-accent/90 transition-all flex items-center justify-center gap-2 group"
               >
                 {t("ctaWork")}
@@ -170,7 +170,7 @@ export function Hero() {
                 <span className="block text-white font-semibold tracking-tight text-xl leading-none">
                   Carlos París
                 </span>
-                <span className="tick mt-2 block text-[11px] uppercase tracking-wider text-foreground/45">
+                <span className="tick mt-2 block text-[11px] uppercase tracking-wider text-foreground/60">
                   {t("heroCaptionRole")}
                 </span>
               </span>
