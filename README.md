@@ -1,6 +1,6 @@
 # Carlos París — Portfolio
 
-Portfolio personal de [Carlos París](https://carlosparis.dev), Full-Stack Developer en Panamá.
+Portfolio personal de [Carlos París](https://carlos-portfolio-dusky.vercel.app), Full-Stack Developer en Panamá.
 
 ## Stack
 
@@ -30,27 +30,22 @@ src/
 │   └── page.tsx          # Composición de secciones
 ├── components/
 │   ├── sections/
-│   │   ├── Hero.tsx          # Foto editorial, CTAs, hora de Panamá
-│   │   ├── About.tsx         # Bio + stack tags
-│   │   ├── Services.tsx      # Habilidades técnicas
-│   │   ├── Showcase.tsx      # Proyectos: SwiftPOS, BoxExpress, Atlas Copilot
-│   │   ├── Process.tsx       # Timeline de trabajo
-│   │   ├── CodeShowcase.tsx  # Snippets animados (React, Node.js, Supabase)
-│   │   ├── FAQ.tsx           # Habilidades blandas
-│   │   └── Contact.tsx       # Formulario + copy-to-email
-│   └── ui/
-│       ├── Navbar.tsx        # Active section con IntersectionObserver
-│       ├── Footer.tsx
-│       ├── EmailFab.tsx      # FAB flotante de email
-│       └── ScrollProgress.tsx
+│   │   ├── Hero.tsx      # Foto, CTAs, hora de Panamá
+│   │   ├── Showcase.tsx  # Caso de estudio de Cobrix + SwiftPOS, BoxExpress, Atlas, landings
+│   │   ├── About.tsx     # Bio
+│   │   ├── Trust.tsx     # Stack
+│   │   └── Contact.tsx   # Formulario + copiar email
+│   └── ui/               # Navbar, Footer, mockups de proyectos, idioma
 └── lib/
-    └── site.ts           # Source of truth: nombre, rol, email, socials
+    ├── site.ts           # Fuente de verdad: nombre, rol, email, redes
+    └── translations.ts   # Textos ES/EN
+public/cobrix-*.png       # Capturas reales de Cobrix
 ```
 
 ## Variable de entorno
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://carlosparis.dev
+NEXT_PUBLIC_SITE_URL=https://carlos-portfolio-dusky.vercel.app
 ```
 
 ## Contacto

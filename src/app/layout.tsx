@@ -2,10 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
-import { GlobalSpotlight } from "@/components/ui/GlobalSpotlight";
-import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { EmailFab } from "@/components/ui/EmailFab";
-import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { Providers } from "@/components/Providers";
 import { SITE } from "@/lib/site";
 import { translations, type Language } from "@/lib/translations";
@@ -128,11 +125,8 @@ export default async function RootLayout({
         <a href="#main-content" className="skip-link">
           {translations[lang].skipLink}
         </a>
-        <ScrollProgress />
-        <GlobalSpotlight />
         <Providers initialLanguage={lang}>
           {children}
-          <LanguageToggle />
           <EmailFab />
         </Providers>
         <div className="grain-overlay" aria-hidden="true" />

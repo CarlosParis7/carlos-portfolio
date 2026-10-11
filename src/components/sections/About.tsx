@@ -19,35 +19,6 @@ export function About() {
             <br />
             {t("aboutHeadC")}
           </h2>
-
-          {/* Identity anchor: fills the left column, balances the long copy on the right */}
-          <div className="mt-10 flex items-center gap-4">
-            <img
-              src="/carlos.jpeg"
-              alt="Carlos Paris"
-              width={56}
-              height={56}
-              className="h-14 w-14 rounded-full object-cover ring-1 ring-white/15"
-            />
-            <div className="min-w-0">
-              <p className="font-semibold text-white leading-tight">
-                {t("aboutRole")}
-              </p>
-              <p className="tick text-sm text-foreground/50 mt-0.5">
-                {t("aboutLocation")}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            <span className="tick text-xs text-foreground/70">
-              {t("aboutAvailable")}
-            </span>
-          </div>
         </div>
 
         <motion.div

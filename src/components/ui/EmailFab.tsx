@@ -29,7 +29,7 @@ export function EmailFab() {
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
-          className="group fixed bottom-6 right-6 safe-bottom z-50 flex items-center justify-center w-14 h-14 rounded-full bg-accent text-black shadow-lg shadow-accent/30"
+          className="group fixed bottom-6 right-6 safe-bottom z-50 hidden md:flex items-center justify-center w-14 h-14 rounded-full bg-accent text-black shadow-lg shadow-accent/30"
         >
           <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-40 animate-ping" />
           <Mail className="relative z-10 w-6 h-6" strokeWidth={2} />

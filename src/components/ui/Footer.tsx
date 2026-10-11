@@ -28,9 +28,8 @@ export function Footer() {
   const { t, mail } = useTranslations();
 
   const navLinks = [
-    { label: t("navAbout"), href: "#about" },
     { label: t("navProjects"), href: "#projects" },
-    { label: t("faqHead").replace(/\.$/, ""), href: "#faq" },
+    { label: t("navAbout"), href: "#about" },
     { label: t("navContact"), href: "#contact" },
   ];
 
@@ -51,9 +50,6 @@ export function Footer() {
 
           {/* Navigation */}
           <nav aria-label={t("navContact")} className="flex flex-col gap-3">
-            <span className="tick text-xs text-foreground/55">
-              —
-            </span>
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -67,9 +63,6 @@ export function Footer() {
 
           {/* Contact */}
           <div className="flex flex-col gap-4">
-            <span className="tick text-xs text-foreground/55">
-              —
-            </span>
             <a
               href={mail()}
               className="inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground transition-colors"

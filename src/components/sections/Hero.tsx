@@ -4,36 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, Download } from "lucide-react";
 import { SITE } from "@/lib/site";
-import { useEffect, useState } from "react";
 import { useTranslations } from "@/lib/useTranslations";
-
-function PanamaTime() {
-  const [time, setTime] = useState("");
-  const { language } = useTranslations();
-
-  useEffect(() => {
-    function update() {
-      setTime(
-        new Intl.DateTimeFormat(language === "en" ? "en-US" : "es-PA", {
-          timeZone: "America/Panama",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }).format(new Date())
-      );
-    }
-    update();
-    const id = setInterval(update, 1000);
-    return () => clearInterval(id);
-  }, [language]);
-
-  if (!time) return null;
-  return (
-    <span className="hidden sm:inline">
-      {time} · {language === "en" ? "Panama City" : "Ciudad de Panamá"}
-    </span>
-  );
-}
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -65,11 +36,10 @@ export function Hero() {
             {t("heroStatus").toUpperCase()}
           </span>
           <span className="h-px flex-1 bg-white/10" />
-          <PanamaTime />
         </motion.div>
 
-        {/* Asymmetric split: oversized headline left, tall portrait right */}
-        <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-8 items-end">
+        {/* Asymmetric split: oversized headline left, framed portrait right */}
+        <div className="grid lg:grid-cols-[1.5fr_1fr] gap-14 lg:gap-12 items-center">
           <div>
             <h1 className="display-xl text-white">
               {[t("heroLine1"), t("heroLine2")].map((line, i) => (
@@ -106,11 +76,12 @@ export function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55, ease }}
-              className="mt-10 flex flex-col sm:flex-row gap-4"
+              className="mt-10 flex flex-wrap items-center gap-3"
             >
+              {/* One primary, one secondary, GitHub as a quiet icon: no three-way tie */}
               <a
                 href="#contact"
-                className="glow bg-accent text-black px-8 py-4 rounded-full font-semibold hover:bg-accent/90 transition-all flex items-center justify-center gap-2 group"
+                className="glow bg-accent text-black h-[52px] px-6 rounded-full font-semibold whitespace-nowrap hover:bg-accent/90 transition-all inline-flex items-center gap-2 group"
               >
                 {t("ctaWork")}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -118,7 +89,7 @@ export function Hero() {
               <a
                 href={cv.href}
                 download={cv.download}
-                className="glass text-foreground px-8 py-4 rounded-full font-medium hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+                className="glass text-foreground h-[52px] px-6 rounded-full font-medium whitespace-nowrap hover:bg-white/5 transition-all inline-flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 {t("ctaCv")}
@@ -127,54 +98,52 @@ export function Hero() {
                 href={SITE.socials.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass text-foreground px-8 py-4 rounded-full font-medium hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+                aria-label={t("ctaGithub")}
+                title={t("ctaGithub")}
+                className="glass text-foreground/70 hover:text-foreground w-[52px] h-[52px] rounded-full hover:bg-white/5 transition-all inline-flex items-center justify-center"
               >
-                <GithubIcon className="w-4 h-4" />
-                {t("ctaGithub")}
+                <GithubIcon className="w-5 h-5" />
               </a>
             </motion.div>
           </div>
 
-          {/* Portrait — editorial, not boxed. The photo's own dark studio
-              backdrop melts into the page; masks + caption do the composing,
-              not a glass card. Visible by default; motion only refines it. */}
+          {/* Portrait — a framed card, not a faux-melt: the photo's backdrop is
+              light gray, so masking it into black only left a smudged gray
+              rectangle. Sized to support the headline, not compete with it. */}
           <motion.figure
             initial={{ opacity: 0.001, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.35, ease }}
-            className="relative m-0 w-full h-[460px] sm:h-[560px] lg:h-[660px] lg:-mr-4 xl:-mr-12 self-end"
+            className="relative m-0 w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] justify-self-center lg:justify-self-end"
           >
-            <Image
-              src="/carlos.jpeg"
-              alt={
-                t("heroCaptionRole") === "Full-Stack Developer · Panama"
-                  ? "Carlos París, full-stack developer, portrait on a dark background"
-                  : "Carlos París, full-stack developer, retrato sobre fondo oscuro"
-              }
-              fill
-              priority
-              sizes="(max-width: 1024px) 85vw, 48vw"
-              className="object-cover object-[50%_18%] select-none [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_88%,transparent),linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] [mask-composite:intersect] [-webkit-mask-composite:source-in]"
-            />
-
-            {/* Page bg seeps back over the edges so the portrait reads as
-                emerging from the dark, never as a pasted rectangle */}
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(115%_92%_at_50%_30%,transparent_58%,var(--matte)_100%)]" />
-            {/* Cyan floor glow tying the figure to the brand accent */}
-            <div className="absolute inset-x-8 bottom-0 h-24 bg-accent/15 blur-3xl rounded-full pointer-events-none" />
-
-            {/* Editorial caption, lower-left, sitting on the floor glow */}
-            <figcaption className="absolute bottom-2 left-0 z-10 flex items-center gap-3">
-              <span className="block h-9 w-px bg-accent" />
-              <span>
-                <span className="block text-white font-semibold tracking-tight text-xl leading-none">
-                  Carlos París
+            {/* Accent glow behind the card ties it to the brand */}
+            <div className="absolute -inset-8 bg-accent/15 blur-3xl rounded-full pointer-events-none" />
+            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl shadow-black/60">
+              <Image
+                src="/carlos.jpeg"
+                alt={
+                  t("heroCaptionRole") === "Full-Stack Developer · Panama"
+                    ? "Carlos París, full-stack developer, portrait"
+                    : "Carlos París, full-stack developer, retrato"
+                }
+                fill
+                priority
+                sizes="(max-width: 640px) 280px, (max-width: 1024px) 340px, 380px"
+                className="object-cover object-[50%_30%] scale-[1.35] origin-[50%_38%] select-none"
+              />
+              {/* Caption sits on a bottom scrim inside the frame */}
+              <figcaption className="absolute inset-x-0 bottom-0 z-10 flex items-center gap-3 bg-gradient-to-t from-black/85 via-black/50 to-transparent px-5 pb-5 pt-14">
+                <span className="block h-9 w-px bg-accent" />
+                <span>
+                  <span className="block text-white font-semibold tracking-tight text-lg leading-none">
+                    Carlos París
+                  </span>
+                  <span className="tick mt-2 block text-[11px] uppercase tracking-wider text-foreground/70">
+                    {t("heroCaptionRole")}
+                  </span>
                 </span>
-                <span className="tick mt-2 block text-[11px] uppercase tracking-wider text-foreground/60">
-                  {t("heroCaptionRole")}
-                </span>
-              </span>
-            </figcaption>
+              </figcaption>
+            </div>
           </motion.figure>
         </div>
       </div>
