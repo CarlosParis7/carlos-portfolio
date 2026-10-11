@@ -35,7 +35,7 @@ function useActiveSection(ids: string[]) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
 
   const links = [
     { label: t("navProjects"), href: "#projects", id: "projects" },
@@ -53,7 +53,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between rounded-full bg-black/75 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/40 pl-5 pr-2.5 py-2.5 sm:px-6 sm:py-3">
         <Link
-          href="/"
+          href={`/${language}`}
           aria-label="Carlos París, inicio"
           className="flex items-center gap-2 font-semibold tracking-tight text-foreground"
         >

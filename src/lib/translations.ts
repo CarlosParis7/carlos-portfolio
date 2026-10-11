@@ -5,6 +5,8 @@
 export const translations = {
   es: {
     // Navbar
+    metaDescription:
+      "Desarrollador full-stack en Panamá. Construyo productos web completos con TypeScript, React, Next.js, Node y PostgreSQL, incluido el punto de venta que un bar usa a diario.",
     skipLink: "Saltar al contenido",
     navAbout: "Sobre mí",
     navProjects: "Proyectos",
@@ -134,6 +136,8 @@ export const translations = {
 
   en: {
     // Navbar
+    metaDescription:
+      "Full-stack developer in Panama. I build complete web products with TypeScript, React, Next.js, Node and PostgreSQL, including the point-of-sale system a bar runs on every day.",
     skipLink: "Skip to main content",
     navAbout: "About",
     navProjects: "Projects",
@@ -264,3 +268,15 @@ export const translations = {
 
 export type Language = keyof typeof translations;
 export type TranslationKey = keyof typeof translations.en;
+
+export const languages = Object.keys(translations) as Language[];
+
+export const isLanguage = (value: string): value is Language =>
+  value in translations;
+
+// Build fails if one language is missing a key the other has: a missing key
+// would otherwise render as "undefined" on the page.
+type MissingInEn = Exclude<keyof typeof translations.es, keyof typeof translations.en>;
+type MissingInEs = Exclude<keyof typeof translations.en, keyof typeof translations.es>;
+type AssertNone<T extends never> = T;
+export type TranslationParity = AssertNone<MissingInEn | MissingInEs>;

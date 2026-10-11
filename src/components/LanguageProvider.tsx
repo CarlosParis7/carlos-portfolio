@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
+import { useRouter } from "next/navigation";
 import { Language } from "@/lib/translations";
 
 type LanguageContextType = {
@@ -14,26 +15,20 @@ const LanguageContext = createContext<LanguageContextType>({
 });
 
 export function LanguageProvider({
-  initialLanguage,
+  language,
   children,
 }: {
-  initialLanguage: Language;
+  language: Language;
   children: React.ReactNode;
 }) {
-  // The server already resolved the language (cookie → Accept-Language header)
-  // and rendered <html lang> plus every string in it. Hydrating from that same
-  // value keeps SSR and the client identical: no mismatch, no flash of English.
-  const [language, setLanguageState] = useState<Language>(initialLanguage);
+  const router = useRouter();
 
-  useEffect(() => {
-    document.documentElement.lang = language;
-  }, [language]);
-
+  // The URL is the source of truth (/es, /en). Switching means navigating to
+  // the other prerendered page, keeping the section the visitor is reading.
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    // A cookie (not just localStorage) so the next SSR renders in this language.
+    // Remembered so "/" sends them back to this language next time (proxy.ts).
     document.cookie = `language=${lang}; path=/; max-age=31536000; samesite=lax`;
-    document.documentElement.lang = lang;
+    router.push(`/${lang}${window.location.hash}`, { scroll: false });
   };
 
   return (

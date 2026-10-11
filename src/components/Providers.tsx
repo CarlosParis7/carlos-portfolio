@@ -5,14 +5,14 @@ import { LanguageProvider } from "./LanguageProvider";
 import type { Language } from "@/lib/translations";
 
 export function Providers({
-  initialLanguage,
+  language,
   children,
 }: {
-  initialLanguage: Language;
+  language: Language;
   children: React.ReactNode;
 }) {
   return (
-    <LanguageProvider initialLanguage={initialLanguage}>
+    <LanguageProvider language={language}>
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </LanguageProvider>
   );
