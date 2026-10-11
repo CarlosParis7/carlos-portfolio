@@ -35,7 +35,7 @@ export const translations = {
     aboutP1:
       "Vivo en Panamá y trabajo con empresas dentro y fuera del país. En el frontend uso React y Next.js; en el backend, Node con Postgres y Supabase. Me toca todo el ciclo: de la primera pantalla al deploy.",
     aboutP2:
-      "He levantado SaaS desde cero, sistemas POS para comercios reales, integraciones de IA con RAG y plataformas que no se pueden caer. Escribo código que el próximo dev (a veces yo mismo en seis meses) pueda leer sin maldecir.",
+      "He levantado SaaS desde cero, un sistema POS que un comercio real usa todos los días e integraciones de IA con RAG. Escribo código que el próximo dev (a veces yo mismo en seis meses) pueda leer sin maldecir.",
     aboutP3Pre: "Busco proyectos donde el detalle importe y donde pueda ",
     aboutP3Strong: "dejar el código mejor de lo que lo encontré.",
     aboutHl1Value: "SaaS",
@@ -62,9 +62,9 @@ export const translations = {
     projSwiftDesc:
       "Arquitectura completa: Next.js al frente, Node y Postgres atrás. Inventario, reportes de ventas y análisis asistido por IA.",
     projBoxDesc:
-      "Tracking en vivo, avisos por WhatsApp con Twilio, dashboard de rentabilidad y la lógica de casilleros P.O. Box.",
+      "Paquetes, clientes, facturas y un dashboard de rentabilidad para couriers con casilleros P.O. Box, sobre Supabase.",
     projAtlasDesc:
-      "Pipeline RAG de punta a punta: ingesta de documentos, embeddings con OpenAI, búsqueda vectorial en pgvector y chat en tiempo real.",
+      "Pipeline RAG de punta a punta: ingesta de documentos, embeddings con OpenAI, búsqueda vectorial en pgvector y respuestas de Claude en streaming. El demo público corre en modo offline, sin costo de API.",
     projLandingDesc:
       "Sitios de alta conversión para clientes reales: clínicas estéticas, firmas legales y fotógrafos. SEO, métricas y animación incluidos.",
     projSwiftCat: "SaaS · Punto de venta",
@@ -129,7 +129,7 @@ export const translations = {
     // Footer
     footerTagline: "Full-Stack Developer en Panamá.",
     footerDesc:
-      "Full-Stack Developer en Panamá. Especializado en Next.js, React, TypeScript y arquitectura escalable. Construyo aplicaciones web modernas y sistemas backend robustos.",
+      "Desarrollador full-stack en Panamá. Construyo productos web completos con TypeScript, React, Next.js, Node y PostgreSQL.",
     footerRights: "Todos los derechos reservados.",
     footerBuilt: "Hecho con Next.js y mucho café.",
   },
@@ -166,7 +166,7 @@ export const translations = {
     aboutP1:
       "I'm based in Panama and work with teams here and abroad. React and Next.js on the front, Node with Postgres and Supabase on the back. I handle the whole cycle, from the first screen to the deploy.",
     aboutP2:
-      "I've built SaaS from zero, POS systems for real shops, RAG-based AI integrations, and platforms that can't go down. I write code the next developer (sometimes me, six months later) can read without cursing.",
+      "I've built SaaS from zero, a POS system a real business uses every day, and RAG-based AI integrations. I write code the next developer (sometimes me, six months later) can read without cursing.",
     aboutP3Pre: "I look for projects where the details matter and where I can ",
     aboutP3Strong: "leave the code better than I found it.",
     aboutHl1Value: "SaaS",
@@ -193,9 +193,9 @@ export const translations = {
     projSwiftDesc:
       "Full architecture: Next.js up front, Node and Postgres behind. Inventory, sales reports and AI-assisted analytics.",
     projBoxDesc:
-      "Live tracking, WhatsApp alerts via Twilio, a profitability dashboard, and the P.O. Box locker logic.",
+      "Packages, customers, invoices and a profitability dashboard for P.O. Box couriers, built on Supabase.",
     projAtlasDesc:
-      "End-to-end RAG pipeline: document ingestion, OpenAI embeddings, vector search on pgvector, and real-time chat.",
+      "End-to-end RAG pipeline: document ingestion, OpenAI embeddings, pgvector search and streamed answers from Claude. The public demo runs in an offline mode, with no API cost.",
     projLandingDesc:
       "High-conversion sites for real clients: aesthetic clinics, law firms and photographers. SEO, metrics and motion included.",
     projSwiftCat: "SaaS · Point of sale",
@@ -260,7 +260,7 @@ export const translations = {
     // Footer
     footerTagline: "Full-Stack Developer in Panama.",
     footerDesc:
-      "Full-Stack Developer in Panama. Specialized in Next.js, React, TypeScript and scalable architecture. I build modern web apps and robust backend systems.",
+      "Full-stack developer in Panama. I build complete web products with TypeScript, React, Next.js, Node and PostgreSQL.",
     footerRights: "All rights reserved.",
     footerBuilt: "Built with Next.js and a lot of coffee.",
   },
