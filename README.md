@@ -1,4 +1,4 @@
-# Carlos París — Portfolio
+# Carlos Paris — Portfolio
 
 Portfolio personal de [Carlos París](https://carlos-portfolio-dusky.vercel.app), desarrollador full-stack en Panamá. Bilingüe (ES/EN), estático y servido desde el CDN de Vercel.
 
