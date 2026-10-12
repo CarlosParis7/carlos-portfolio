@@ -4,7 +4,7 @@
 export const SITE = {
   name: "Carlos París",
   role: "Full-Stack Developer",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://carlosparis.dev",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://carlos-portfolio-dusky.vercel.app",
   description:
     "Full-Stack Developer en Panamá. Especializado en Next.js, React, TypeScript y arquitectura escalable. Construyo aplicaciones web modernas y sistemas backend robustos.",
   locale: "es_PA",

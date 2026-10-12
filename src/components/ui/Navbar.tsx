@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "@/lib/useTranslations";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
 
 
 function useActiveSection(ids: string[]) {
@@ -34,11 +35,11 @@ function useActiveSection(ids: string[]) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
 
   const links = [
-    { label: t("navAbout"), href: "#about", id: "about" },
     { label: t("navProjects"), href: "#projects", id: "projects" },
+    { label: t("navAbout"), href: "#about", id: "about" },
     { label: t("navContact"), href: "#contact", id: "contact" },
   ];
 
@@ -50,9 +51,9 @@ export function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between glass rounded-full pl-5 pr-2.5 py-2.5 sm:px-6 sm:py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between rounded-full bg-black/75 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/40 pl-5 pr-2.5 py-2.5 sm:px-6 sm:py-3">
         <Link
-          href="/"
+          href={`/${language}`}
           aria-label="Carlos París, inicio"
           className="flex items-center gap-2 font-semibold tracking-tight text-foreground"
         >
@@ -85,6 +86,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <LanguageToggle />
           <a
             href="#contact"
             className="hidden sm:inline-flex bg-foreground text-background px-5 py-2 rounded-full text-sm font-medium hover:bg-foreground/90 transition-colors"

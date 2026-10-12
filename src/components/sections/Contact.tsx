@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Copy, Check, Download } from "lucide-react";
+import { Copy, Check, Download, ArrowUpRight } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { useTranslations } from "@/lib/useTranslations";
 
@@ -37,138 +37,82 @@ function CopyEmailButton({ email }: { email: string }) {
       type="button"
       onClick={handleCopy}
       aria-label={copied ? t("copiedEmail") : t("copyEmail")}
-      className="px-3 py-3 bg-accent/80 text-black hover:bg-accent transition-colors relative w-10 flex items-center justify-center"
+      title={copied ? t("copiedEmail") : t("copyEmail")}
+      className="glass inline-flex h-12 shrink-0 items-center gap-2 rounded-full px-4 text-sm font-medium text-foreground/80 transition-colors hover:text-white"
     >
       <AnimatePresence mode="wait" initial={false}>
-        {copied ? (
-          <motion.span
-            key="check"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.5, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <Check className="w-4 h-4" />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="copy"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.5, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <Copy className="w-4 h-4" />
-          </motion.span>
-        )}
+        <motion.span
+          key={copied ? "check" : "copy"}
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.5, opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        >
+          {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+        </motion.span>
       </AnimatePresence>
+      <span aria-live="polite">{copied ? t("copiedEmail") : t("copyEmail")}</span>
     </button>
   );
 }
 
 export function Contact() {
   const { t, cv, mail } = useTranslations();
-  const [name, setName] = useState("");
-  const [project, setProject] = useState("");
-  const [detail, setDetail] = useState("");
 
-  function handleSubmit(e: { preventDefault(): void }) {
-    e.preventDefault();
-    const subject = project
-      ? `${t("mailFormSubjectPrefix")} ${project}`
-      : t("mailSubject");
-    const body = [
-      name && `${t("mailFormGreeting")} ${name}.`,
-      detail && detail,
-      "",
-      t("mailFormSentFrom"),
-    ]
-      .filter(Boolean)
-      .join("\n");
-    window.location.href = mail(subject, body);
-  }
+  const links = [
+    { label: "LinkedIn", href: SITE.socials.linkedin, Icon: LinkedinIcon },
+    { label: "GitHub", href: SITE.socials.github, Icon: GithubIcon },
+  ];
 
   return (
-    <section id="contact" className="py-32 px-6 relative overflow-hidden">
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[60px] sm:blur-[100px] pointer-events-none" />
+    <section id="contact" className="pt-32 pb-20 md:pt-40 md:pb-24 px-6 relative overflow-hidden border-t border-white/5">
+      <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-accent/10 rounded-full blur-[60px] sm:blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-center relative z-10">
-        <div className="flex-1">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-[0.95] tracking-tight text-balance">
-            {t("contactHeadA")}
-            <br />
-            <span className="text-foreground/40">{t("contactHeadB")}</span>
-          </h2>
-          <p className="text-lg text-foreground/55 mb-8 max-w-md leading-relaxed">
-            {t("contactSub")}
-          </p>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <h2 className="text-4xl md:text-6xl font-bold leading-[0.95] tracking-tight text-balance">
+          {t("contactHeadA")}
+          <br />
+          <span className="text-foreground/40">{t("contactHeadB")}</span>
+        </h2>
+        <p className="mt-6 text-lg text-foreground/60 max-w-md leading-relaxed">
+          {t("contactSub")}
+        </p>
 
-          <div className="flex flex-wrap gap-3">
-            <div className="inline-flex items-center rounded-full overflow-hidden border border-white/10">
-              <a
-                href={mail()}
-                className="inline-flex items-center gap-2 bg-accent text-black pl-5 pr-4 py-3 font-semibold hover:bg-accent/90 transition-colors text-sm"
-              >
-                <Mail className="w-4 h-4 shrink-0" />
-                {SITE.email}
-              </a>
-              <CopyEmailButton email={SITE.email} />
-            </div>
-            <a
-              href={cv.href}
-              download={cv.download}
-              className="inline-flex items-center gap-2 glass px-5 py-3 rounded-full text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              {t("ctaCv")}
-            </a>
-            <a
-              href={SITE.socials.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="inline-flex items-center justify-center glass w-12 h-12 rounded-full text-foreground/70 hover:text-foreground transition-colors"
-            >
-              <GithubIcon className="w-5 h-5" />
-            </a>
-            <a
-              href={SITE.socials.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="inline-flex items-center justify-center glass w-12 h-12 rounded-full text-foreground/70 hover:text-foreground transition-colors"
-            >
-              <LinkedinIcon className="w-5 h-5" />
-            </a>
-          </div>
+        {/* The email IS the call to action: one big target, no fake form */}
+        <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a
+            href={mail()}
+            className="group inline-flex items-center gap-2 font-semibold tracking-tight text-white text-[clamp(1.25rem,3vw,2.25rem)] leading-none underline decoration-accent/40 decoration-2 underline-offset-[0.25em] transition-colors hover:text-accent hover:decoration-accent"
+          >
+            {SITE.email}
+            <ArrowUpRight className="h-[0.7em] w-[0.7em] shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </a>
+          <CopyEmailButton email={SITE.email} />
         </div>
 
-        <div className="flex-1 w-full max-w-md">
-          <motion.form
-            onSubmit={handleSubmit}
-            initial={{ x: 20 }}
-            whileInView={{ x: 0 }}
-            viewport={{ once: true }}
-            className="glass rounded-3xl p-8 border border-white/10"
+        {/* Secondary channels: quiet text links, not competing buttons */}
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-wrap gap-x-8 gap-y-3 text-sm">
+          {links.map(({ label, href, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-foreground/65 transition-colors hover:text-white"
+            >
+              <Icon className="h-4 w-4" />
+              {label}
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
+            </a>
+          ))}
+          <a
+            href={cv.href}
+            download={cv.download}
+            className="inline-flex items-center gap-2 text-foreground/65 transition-colors hover:text-white"
           >
-            <div className="flex flex-col gap-4">
-              <div>
-                <label htmlFor="contact-name" className="text-sm font-medium text-foreground/70 mb-1.5 block">{t("formName")}</label>
-                <input id="contact-name" name="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/30" placeholder={t("formNamePh")} />
-              </div>
-              <div>
-                <label htmlFor="contact-project" className="text-sm font-medium text-foreground/70 mb-1.5 block">{t("formRole")}</label>
-                <input id="contact-project" name="project" type="text" value={project} onChange={(e) => setProject(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/30" placeholder={t("formRolePh")} />
-              </div>
-              <div>
-                <label htmlFor="contact-detail" className="text-sm font-medium text-foreground/70 mb-1.5 block">{t("formDetail")}</label>
-                <textarea id="contact-detail" name="detail" rows={3} value={detail} onChange={(e) => setDetail(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-white placeholder:text-white/30 resize-none" placeholder={t("formDetailPh")} />
-              </div>
-              <button type="submit" className="w-full mt-4 bg-white text-black font-semibold rounded-xl px-4 py-3 hover:bg-white/90 transition-colors">
-                {t("formSubmit")}
-              </button>
-            </div>
-          </motion.form>
+            <Download className="h-4 w-4" />
+            {t("ctaCv")}
+          </a>
         </div>
       </div>
     </section>
